@@ -1,0 +1,112 @@
+CREATE DATABASE fastbank;
+USE fastbank;
+
+CREATE TABLE Endereco (
+    endereco_id INT AUTO_INCREMENT PRIMARY KEY,
+    rua VARCHAR(100) NOT NULL,
+    bairro VARCHAR(100) NOT NULL,
+    cidade VARCHAR(50) NOT NULL,
+    num INT,
+    uf CHAR(2),
+    cep CHAR(10)
+);
+
+CREATE TABLE Contato (
+    contato_id INT AUTO_INCREMENT PRIMARY KEY,
+    numero VARCHAR(11)
+);
+
+CREATE TABLE Tipo_conta (
+    tipo_conta_id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Cliente (
+    cliente_id INT AUTO_INCREMENT PRIMARY KEY,
+    endereco_id INT,
+    nomeCompleto VARCHAR(100) NOT NULL,
+    tipo_conta_id INT,
+    dataNascimento DATE NULL,
+    contato_id INT,
+    email VARCHAR(100) NOT NULL,
+    senha VARCHAR(255) NOT NULL,  -- Use um tipo apropriado para senhas criptografadas
+    foto VARCHAR(100) NULL,
+    FOREIGN KEY (endereco_id) REFERENCES endereco(endereco_id),
+    FOREIGN KEY (contato_id) REFERENCES contato(contato_id),
+    FOREIGN KEY (tipo_conta_id) REFERENCES tipo_conta(tipo_conta_id)
+);
+
+
+CREATE TABLE Pessoa_fisica (
+    cliente_id INT PRIMARY KEY,
+    cpf VARCHAR(11) NOT NULL,
+    rg VARCHAR(11) NOT NULL,
+    FOREIGN KEY (cliente_id) REFERENCES cliente(cliente_id)
+);
+
+CREATE TABLE Pessoa_juridica (
+    cliente_id INT PRIMARY KEY,
+    cnpj VARCHAR(14) NOT NULL,
+    razaoSocial VARCHAR(100) NOT NULL,
+    inscricaoEstadual VARCHAR(20) NOT NULL,
+    FOREIGN KEY (cliente_id) REFERENCES cliente(cliente_id)
+);
+
+CREATE TABLE Conta (
+    conta_id INT AUTO_INCREMENT PRIMARY KEY,
+    cliente_id INT,
+    agencia VARCHAR(10),
+    numero VARCHAR(25),
+    saldo DECIMAL(10, 2),
+    data_abertura DATE,
+    ativa BOOLEAN,
+    FOREIGN KEY (cliente_id) REFERENCES cliente(cliente_id)
+);
+
+
+CREATE TABLE Cartao (
+    cartao_id INT AUTO_INCREMENT PRIMARY KEY,
+    conta_id INT,
+    numero VARCHAR(30),
+    cvv CHAR(5),
+    validade DATE,
+    FOREIGN KEY (conta_id) REFERENCES conta(conta_id)
+);
+
+CREATE TABLE Movimentacao (
+    movimentacao_id INT PRIMARY KEY,
+    conta_origem_id INT,
+    conta_destino_id INT,
+    valor DECIMAL(10, 2),
+    data_movimentacao DATETIME,
+    tipo_movimentacao_id INT,  -- Chave estrangeira para uma tabela de tipos de movimentação
+    FOREIGN KEY (conta_origem_id) REFERENCES conta(conta_id),
+    FOREIGN KEY (conta_destino_id) REFERENCES conta(conta_id),
+    FOREIGN KEY (tipo_movimentacao_id) REFERENCES tipo_movimentacao(tipo_movimentacao_id)
+);
+
+CREATE TABLE Tipo_movimentacao (
+    tipo_movimentacao_id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(20) NOT NULL
+);
+
+
+CREATE TABLE Emprestimo (
+    emprestimo_id INT PRIMARY KEY,
+    conta_id INT,
+    valor_solicitado DECIMAL(10, 2),
+    taxa_juros DECIMAL(5, 2),  -- Adicionando a taxa de juros em percentual
+    data_solicitacao DATE,
+    data_aprovacao DATE,
+    FOREIGN KEY (conta_id) REFERENCES Conta(conta_id)
+);
+
+
+CREATE TABLE AvaliacaoCredito (
+    avaliacao_id INT PRIMARY KEY,
+    conta_id INT,
+    pontuacao INT,
+    pode_ter_cartao BOOLEAN,
+    data_avaliacao DATE,
+    FOREIGN KEY (cliente_id) REFERENCES Conta(cliente_id)
+);
