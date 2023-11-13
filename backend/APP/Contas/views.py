@@ -4,8 +4,20 @@ from rest_framework.response import Response
 
 from rest_framework import status
 
-from .models import Conta, Cartao, Movimentacao, Extrato
-from .serializers import ContaSerializer, CartaoSerializer, MovimentacaoSerializer, ExtratoSerializer
+from .models import (
+    Conta, 
+    Cartao, 
+    Movimentacao, 
+    Extrato, 
+    AvaliacaoCredito
+                     )
+from .serializers import (
+    ContaSerializer, 
+    CartaoSerializer, 
+    MovimentacaoSerializer, 
+    ExtratoSerializer, 
+    AvaliacaoCreditoSerializer
+                          )
 
 class ContaViewSet(viewsets.ModelViewSet):
     queryset = Conta.objects.all()
@@ -48,7 +60,7 @@ class MovimentacaoViewSet(viewsets.ModelViewSet):
         match tipo_movimentacao:
             case "DEP":
                 self.realizar_deposito(conta_origem, valor)
-            case "TED":
+            case "TED", "PIX", "PAG":
                 self.realizar_transferencia(conta_origem, conta_destino, valor, saldo_conta)
 
     def realizar_deposito(self, conta_origem, valor):
@@ -72,3 +84,29 @@ class MovimentacaoViewSet(viewsets.ModelViewSet):
 class ExtratoViewSet(viewsets.ModelViewSet):
     queryset = Extrato.objects.all()
     serializer_class = ExtratoSerializer
+    
+
+class AvaliacaoCreditoViewSet(viewsets.ModelViewSet):
+    queryset = AvaliacaoCredito.objects.all()
+    serializer_class = AvaliacaoCreditoSerializer
+    
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        try:
+            avaliacao = serializer.save()
+            conta = avaliacao.conta
+            saldo_conta = conta.saldo
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+    def avaliando_credito(self, saldo_conta, conta):
+        if saldo_conta > 500:
+            
+            permissao_credito = True
+            pontuacao = 10
+            
+            AvaliacaoCredito.objects.create(conta=conta, permissao=permissao_credito)

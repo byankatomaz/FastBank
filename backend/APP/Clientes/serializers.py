@@ -17,6 +17,10 @@ class ClienteSerializer(serializers.ModelSerializer):
             'email',
             'senha',
             'tipo',
+            'rua',
+            'bairro',
+            'estado',
+            'num',
             'cep',
             'criacao',
             'ativo'
