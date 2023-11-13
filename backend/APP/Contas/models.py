@@ -19,6 +19,7 @@ class Base(models.Model):
 class Conta(Base):
     cliente = models.OneToOneField(Cliente, on_delete=models.CASCADE)
     saldo = models.DecimalField('Saldo', max_digits=10, decimal_places=2)
+    limite = models.DecimalField('Limite', max_digits=10, decimal_places=2)
     agencia = models.CharField('Agência', max_length=4)
     numero = models.CharField('Numero', max_length=8, unique=True)
     
@@ -100,8 +101,8 @@ class Emprestimo(Base):
 
 class AvaliacaoCredito(Base):
     conta = models.ForeignKey('Conta', on_delete=models.CASCADE)
-    pontuacao = models.IntegerField('Pontuação')
-    permissao = models.BooleanField('Permissão')
+    limite = models.DecimalField('Limite', max_digits=10, decimal_places=2, blank=True, null=True)
+    permissao = models.BooleanField('Permissão', blank=True, null=True)
     
     class Meta:
         verbose_name = 'Avaliação de Crédito'
@@ -118,7 +119,7 @@ def criar_conta_para_cliente(sender, instance, created, **kwargs):
     
         numeroConta = str(random.randint(10000000, 99999999))
         
-        conta = Conta.objects.create(cliente=instance, saldo=0.0, agencia='2412', numero=numeroConta)
+        conta = Conta.objects.create(cliente=instance, saldo=0.0, limite=0.0, agencia='2412', numero=numeroConta)
         
         numeroCartao = str(random.randint(1000000000000000, 9999999999999999))
         cvv = random.randint(100, 999)

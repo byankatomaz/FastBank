@@ -19,8 +19,11 @@ from django.urls import path, include
 from APP.Clientes.urls import routerCli
 from APP.Contas.urls import routerCont
 
+from django.conf.urls.static import static
+from django.conf import settings
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(routerCli.urls)),
     path('api/v1/', include(routerCont.urls))
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

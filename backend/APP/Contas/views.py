@@ -60,7 +60,7 @@ class MovimentacaoViewSet(viewsets.ModelViewSet):
         match tipo_movimentacao:
             case "DEP":
                 self.realizar_deposito(conta_origem, valor)
-            case "TED", "PIX", "PAG":
+            case "TED":
                 self.realizar_transferencia(conta_origem, conta_destino, valor, saldo_conta)
 
     def realizar_deposito(self, conta_origem, valor):
@@ -98,15 +98,22 @@ class AvaliacaoCreditoViewSet(viewsets.ModelViewSet):
             avaliacao = serializer.save()
             conta = avaliacao.conta
             saldo_conta = conta.saldo
+            
+            self.avaliando_credito(saldo_conta, conta)
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
     def avaliando_credito(self, saldo_conta, conta):
-        if saldo_conta > 500:
+        if saldo_conta >= 500.00:
             
             permissao_credito = True
-            pontuacao = 10
+            limite = 0.75 * float(saldo_conta)
+            conta.limite = limite
+            AvaliacaoCredito.objects.create(conta=conta, limite=limite, permissao=permissao_credito)
             
-            AvaliacaoCredito.objects.create(conta=conta, permissao=permissao_credito)
+        else:
+            permissao_credito = False
+            conta.limite = 0
+            AvaliacaoCredito.objects.create(conta=conta, limite=0, permissao=permissao_credito)

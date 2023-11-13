@@ -51,8 +51,8 @@ class AvaliacaoCreditoSerializer(serializers.ModelSerializer):
         model = AvaliacaoCredito
         fields = (
             'id', 
-            'conta', 
-            'pontuacao',
+            'conta',
+            'limite',
             'permissao'
         )
 
@@ -67,6 +67,7 @@ class ContaSerializer(serializers.ModelSerializer):
             'id',
             'cliente',
             'saldo',
+            'limite',
             'agencia',
             'numero',
             'criacao',

@@ -13,6 +13,7 @@ class ClienteSerializer(serializers.ModelSerializer):
         model = Cliente
         fields = (
             'id',
+            'imagem',
             'nome',
             'email',
             'senha',

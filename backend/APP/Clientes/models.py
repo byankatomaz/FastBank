@@ -1,4 +1,11 @@
 from django.db import models
+from stdimage.models import StdImageField
+import uuid
+
+def get_file_path(_instace, filename):
+    ext = filename.split('.', -1)
+    filename = f'{uuid.uuid4()}.{ext}'
+    return filename
 
 class Base(models.Model):
     criacao = models.DateTimeField(auto_now_add=True)
@@ -26,6 +33,7 @@ class Cliente(Base):
         ('PJ', 'Pessoa Jurídica')
     ]
     
+    imagem = StdImageField('Imagem', upload_to='perfis', variations={'thumb': {'width': 480, 'height': 480, 'crop': True}})
     nome = models.CharField('Nome', max_length=100, null=False)
     email = models.EmailField('Email', null=False)
     senha = models.CharField('Senha', max_length=12)
