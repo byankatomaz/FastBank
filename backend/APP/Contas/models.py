@@ -19,7 +19,6 @@ class Base(models.Model):
 class Conta(Base):
     cliente = models.OneToOneField(Cliente, on_delete=models.CASCADE)
     saldo = models.DecimalField('Saldo', max_digits=10, decimal_places=2)
-    limite = models.DecimalField('Limite', max_digits=10, decimal_places=2)
     agencia = models.CharField('Agência', max_length=4)
     numero = models.CharField('Numero', max_length=8, unique=True)
     
@@ -42,6 +41,7 @@ class Cartao(Base):
     cvv = models.CharField('CVV', max_length=3, unique=True)
     tipo = models.CharField('Tipo', max_length=10, choices=TIPO_CHOICES, null=False)
     conta = models.OneToOneField('Conta', on_delete=models.CASCADE, related_name='cartao')
+    limite = models.DecimalField('Limite', max_digits=10, decimal_places=2)
     vencimento = models.DateField()
     
     class Meta:

@@ -38,10 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
+    'djoser',
     'rest_framework',
     'django_filters',
     'rest_framework.authtoken',
     'stdimage',
+    'drf_yasg',
     
     'APP.Clientes',
     'APP.Contas'
@@ -139,6 +141,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #DRF
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         # 'rest_framework.authentication.TokenAuthentication',
     ),
@@ -154,4 +157,8 @@ REST_FRAMEWORK = {
     #     'anon': '5/minute',
     #     'user':'10/minute'
     # },
+}
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT', )
 }

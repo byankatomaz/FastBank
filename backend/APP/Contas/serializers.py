@@ -12,6 +12,7 @@ class CartaoSerializer(serializers.ModelSerializer):
             'numero',
             'tipo',
             'cvv',
+            'limite',
             'vencimento',
             'criacao',
             'ativo'
