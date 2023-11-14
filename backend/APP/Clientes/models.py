@@ -1,5 +1,6 @@
 from django.db import models
 from stdimage.models import StdImageField
+from django.contrib.auth.models import AbstractUser
 import uuid
 
 def get_file_path(_instace, filename):
@@ -7,7 +8,7 @@ def get_file_path(_instace, filename):
     filename = f'{uuid.uuid4()}.{ext}'
     return filename
 
-class Base(models.Model):
+class Base(AbstractUser):
     criacao = models.DateTimeField(auto_now_add=True)
     modificacao = models.DateField(auto_now=True)
     ativo = models.BooleanField(default=True)
@@ -35,8 +36,7 @@ class Cliente(Base):
     
     imagem = StdImageField('Imagem', upload_to='perfis', variations={'thumb': {'width': 480, 'height': 480, 'crop': True}})
     nome = models.CharField('Nome', max_length=100, null=False)
-    email = models.EmailField('Email', null=False)
-    senha = models.CharField('Senha', max_length=12)
+    cpf = models.CharField('CPF', max_length=11)
     tipo = models.CharField('Tipo', max_length=2, choices=TIPO_CHOICES)
     
     rua = models.CharField(max_length=250, null=False)

@@ -3,7 +3,7 @@ from .models import Cliente, Contato
 
 @admin.register(Cliente)
 class ClienteAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'email', 'senha', 'rua', 'tipo', 'criacao', 'ativo')
+    list_display = ('nome', 'rua', 'tipo', 'criacao', 'ativo')
 
 @admin.register(Contato)
 class ContatoAdmin(admin.ModelAdmin):

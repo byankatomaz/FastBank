@@ -68,7 +68,6 @@ class ContaSerializer(serializers.ModelSerializer):
             'id',
             'cliente',
             'saldo',
-            'limite',
             'agencia',
             'numero',
             'criacao',
