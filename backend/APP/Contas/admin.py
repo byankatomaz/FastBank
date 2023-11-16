@@ -9,7 +9,7 @@ class ContaAdmin(admin.ModelAdmin):
 
 @admin.register(Cartao)
 class CartaoAdmin(admin.ModelAdmin):
-    list_display = ('conta', 'numero', 'tipo', 'vencimento', 'criacao', 'ativo')
+    list_display = ('conta', 'numero', 'tipo', 'limite', 'vencimento', 'criacao', 'ativo')
 
 
 @admin.register(Movimentacao)

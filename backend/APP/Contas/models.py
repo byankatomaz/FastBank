@@ -119,13 +119,13 @@ def criar_conta_para_cliente(sender, instance, created, **kwargs):
     
         numeroConta = str(random.randint(10000000, 99999999))
         
-        conta = Conta.objects.create(cliente=instance, saldo=0.0, limite=0.0, agencia='2412', numero=numeroConta)
+        conta = Conta.objects.create(cliente=instance, saldo=0.0, agencia='2412', numero=numeroConta)
         
         numeroCartao = str(random.randint(1000000000000000, 9999999999999999))
         cvv = random.randint(100, 999)
         vencimento = conta.criacao + timedelta(days=(3 * 365))
         
-        Cartao.objects.create(conta=conta, cvv=cvv, numero=numeroCartao, vencimento=vencimento, tipo='CD')
+        Cartao.objects.create(conta=conta, cvv=cvv, numero=numeroCartao, limite=0.0, vencimento=vencimento, tipo='CD')
 
 
 @receiver(post_save, sender=Movimentacao)
