@@ -8,7 +8,7 @@ class ClienteSerializer(serializers.ModelSerializer):
     class Meta:
         extra_kwargs = {
             'email': {'write_only': True},
-            'senha': {'write_only': True}
+            'password': {'write_only': True}
         }
         model = Cliente
         fields = (
@@ -16,14 +16,14 @@ class ClienteSerializer(serializers.ModelSerializer):
             'imagem',
             'nome',
             'email',
-            'senha',
+            'password',
             'tipo',
             'rua',
             'bairro',
             'estado',
             'num',
             'cep',
-            'criacao',
+            'date_joined',
             'ativo'
         )
     

@@ -40,8 +40,7 @@ def get_file_path(_instance, filename):
     return filename
 
 
-class Base(models.Model):
-    criacao = models.DateTimeField(auto_now_add=True)
+class Base(AbstractUser):
     modificacao = models.DateField(auto_now=True)
     ativo = models.BooleanField(default=True)
     
@@ -57,35 +56,39 @@ class Cliente(Base):
     ]
     
     imagem = StdImageField('Imagem', upload_to='perfis', variations={'thumb': {'width': 480, 'height': 480, 'crop': True}})
-    username = models.CharField('Nome', max_length=100)
+    nome = models.CharField('Nome', max_length=100)
     email = models.EmailField('E-mail', unique=True)
     cpf = models.CharField('CPF', max_length=11)
     tipo = models.CharField('Tipo', max_length=2, choices=TIPO_CHOICES)
     
-    rua = models.CharField(max_length=250, null=False)
+    rua = models.CharField(max_length=250, blank=False, null=False)
     bairro = models.CharField(max_length=100, null=False)
     cidade = models.CharField(max_length=100, null=False)
     estado = models.CharField(max_length=30, null=False)
-    num = models.IntegerField()
-    cep = models.IntegerField()
+    num = models.IntegerField(null=True)
+    cep = models.IntegerField(null=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['__all__']
+    REQUIRED_FIELDS = ['nome', 'cpf', 'tipo', 'rua', 'bairro', 'cidade', 'estado', 'num', 'cep', 'ativo']
     
     class Meta:
         verbose_name = 'Cliente'
         verbose_name_plural = 'Clientes'
         unique_together = ['email']
+    
         
     def __str__(self):
-        return self.nome
+        return self.username
     
     objects = ClienteManager()
 
 
-class Contato(Base):
+class Contato(models.Model):
     numero = models.CharField(max_length=11, null=False)
     cliente = models.ForeignKey('Cliente', on_delete=models.CASCADE, related_name='contatos')
+    criacao = models.DateTimeField(auto_now_add=True)
+    modificacao = models.DateField(auto_now=True)
+    ativo = models.BooleanField(default=True)
     
     class Meta:
         verbose_name = 'Contato'

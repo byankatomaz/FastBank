@@ -133,7 +133,7 @@ STATIC_ROOT = Path(BASE_DIR, 'staticfiles')
 MEDIA_URL = 'media/'
 MEDIA_ROOT = Path(BASE_DIR, 'media')
 
-# AUTH_USER_MODEL = 'Clientes.Cliente'
+AUTH_USER_MODEL = 'Clientes.Cliente'
 
 
 # Default primary key field type

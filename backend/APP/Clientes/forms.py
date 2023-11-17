@@ -6,7 +6,21 @@ class ClienteCreateForm(UserCreationForm):
     
     class Meta:
         model = Cliente
-        fields = '__all__'
-    
+        fields = ['nome', 'email', 'cpf', 'tipo', 'rua', 'bairro', 'cidade', 'estado', 'num', 'cep', 'ativo']
+
     def save(self, commit=True):
-        return 
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data['password1'])
+        user.email = self.cleaned_data['username']
+        
+        if commit:
+            user.save()
+        
+        return user
+    
+
+class ClienteChangeForm(UserChangeForm):
+    
+    class Meta:
+        model = Cliente
+        fields = ['nome', 'email', 'cpf', 'tipo', 'rua', 'bairro', 'cidade', 'estado', 'num', 'cep', 'ativo']
