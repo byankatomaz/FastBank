@@ -10,8 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 
 {
-  "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcwMDYwMTE0MywiaWF0IjoxNzAwNTE0NzQzLCJqdGkiOiJiYWYyNmY0NTY3OTA0MzM5YmZiMTUxM2Q2YzBiZTY4NCIsInVzZXJfaWQiOjJ9.OPq_P5IxNqC_6pxLHL_uzuZPFA-xw4GZaClY-NBPOSs",
-  "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNTE1MDQzLCJpYXQiOjE3MDA1MTQ3NDMsImp0aSI6Ijg0NTkzN2FiZjNhOTQ5OGRhZGU0ZGY5ZjM2NTBhZWJkIiwidXNlcl9pZCI6Mn0.VmGv6Rmq1HPcyzZP-iuuuyDcGSQOqUtjPe6lMHlngw0"
+  "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcwMDY1MTcyMCwiaWF0IjoxNzAwNTY1MzIwLCJqdGkiOiIxNjdmNDNkYTMwOGQ0NjE2YjJiNzk2YjU0Y2Q1Y2I3MiIsInVzZXJfaWQiOjF9.KOrstZFn3ndidehO08C46MqEengo6cUhxhCeVvZOgWw",
+  "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNTY1NjIwLCJpYXQiOjE3MDA1NjUzMjAsImp0aSI6IjM4YWNjOTc2ZDBlZTQzMmU5ZjVkNTM1YTMxZWI3YjAwIiwidXNlcl9pZCI6MX0.effN8fV0aUGadYYcBHjF6ShzxTCm7O9Xno7xCfRchLg"
 }
 
 """
@@ -151,36 +151,37 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
         # 'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ),
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination', 'PAGE_SIZE': 2,
-    # 'DEFAULT_THROTTLE_CLASSES':(
-    #     'rest_framework.throttling.AnonRateThrottle',
-    #     'rest_framework.throttling.UserRateThrottle',
-    # ),
-    # 'DEFAULT_THROTTLE_RATES': {
-    #     'anon': '5/minute',
-    #     'user':'10/minute'
-    # },
+    'DEFAULT_THROTTLE_CLASSES':(
+        'rest_framework.throttling.UserRateThrottle',
+    ),
+    'DEFAULT_THROTTLE_RATES': {
+        'user':'10/minute'
+    },
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser'
+    ),
 }
 
-# DJOSER = {
-#     'SERIALIZERS': {
-#         'user': 'APP.Clientes.serializers.ClienteSerializer',
-#     },
-# }
+DJOSER = {
+    'SERIALIZERS': {
+        'user': 'APP.Clientes.serializers.ClienteSerializer',
+    },
+}
 
 
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer', ),
-    "ACESS_TOKEN_LIFETIME": timedelta(minutes=60),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1)
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=10)
 }
 
 

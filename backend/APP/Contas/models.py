@@ -89,7 +89,10 @@ class Extrato(Base):
 class Emprestimo(Base):
     conta = models.ForeignKey('Conta', on_delete=models.CASCADE)
     valor_solicitado = models.DecimalField('Valor', max_digits=10, decimal_places=2)
-    taxa_juros = models.DecimalField('Taxa', max_digits=10, decimal_places=2)
+    parcelas = models.IntegerField('Parcelas')
+    taxa_juros = models.DecimalField('Taxa', max_digits=10, decimal_places=2, blank=True, null=True)
+    pag_mensal =  models.DecimalField('Pagamento Mensal', max_digits=10, decimal_places=2, blank=True, null=True)
+    total_pagar =  models.DecimalField('Total A Pagar', max_digits=10, decimal_places=2, blank=True, null=True)
     
     class Meta:
         verbose_name = 'Empréstimo'

@@ -106,8 +106,6 @@ class AvaliacaoCreditoViewSet(viewsets.ModelViewSet):
             salario = conta.cliente.salario
             
             ultima_avaliacao = AvaliacaoCredito.objects.filter(conta=conta).order_by('data_solicitacao').first()
-            
-            print(ultima_avaliacao.data_solicitacao)
 
             if not ultima_avaliacao or self.pode_realizar_avaliacao(ultima_avaliacao.data_solicitacao):
                 self.avaliando_credito(salario, conta, cartao)
@@ -140,9 +138,68 @@ class AvaliacaoCreditoViewSet(viewsets.ModelViewSet):
             avaliacao_datetime = ultima_avaliacao.replace(tzinfo=pytz.timezone("America/Sao_Paulo"))
 
             tempo_passado = datetime.now(pytz.timezone("America/Sao_Paulo")) - avaliacao_datetime
-            return tempo_passado >= timedelta(minutes=30)
+            return tempo_passado >= timedelta(minutes=0)
 
 
 class EmprestimoViewSet(viewsets.ModelViewSet):
     queryset = Emprestimo.objects.all()
     serializer_class = EmprestimoSerializer
+    
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        try:
+            emprestimo = serializer.validated_data
+            
+            conta = emprestimo['conta']
+            valor_solicitado = emprestimo['valor_solicitado']
+            parcelas = emprestimo['parcelas']
+            
+            ultimo_emprestimo = AvaliacaoCredito.objects.filter(conta=conta).order_by('criacao').first()
+            
+            self.emprestimo_calculando(valor_solicitado, conta, parcelas)
+
+            # if not ultima_avaliacao or self.pode_realizar_avaliacao(ultima_avaliacao.data_solicitacao):
+            #     
+            # else:
+            #     raise Exception("Avaliação de crédito permitida apenas a cada 30 minutos.")
+            
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+    def emprestimo_calculando(self, valor_solicitado, conta, parcelas):
+        
+        taxa_juros = 0.075
+        
+        for i in range(1, parcelas+1):
+            
+            juros = float(valor_solicitado) * taxa_juros * i
+            
+            total_pagar = float(valor_solicitado) + juros
+            
+        
+        pag_mensal = total_pagar / parcelas
+        
+        conta.saldo += valor_solicitado
+        
+        conta.save()
+        
+        Emprestimo.objects.create(conta=conta, valor_solicitado=valor_solicitado, taxa_juros=taxa_juros, pag_mensal=pag_mensal, total_pagar=total_pagar, parcelas=parcelas)
+        
+
+        # else:
+        #     cartao.limite = 0.00
+        #     cartao.save()
+        #     AvaliacaoCredito.objects.create(conta=conta, limite=0.00, permissao=False)
+    
+    def pode_realizar_avaliacao(self, ultima_avaliacao):
+
+        if ultima_avaliacao:
+        
+            avaliacao_datetime = ultima_avaliacao.replace(tzinfo=pytz.timezone("America/Sao_Paulo"))
+
+            tempo_passado = datetime.now(pytz.timezone("America/Sao_Paulo")) - avaliacao_datetime
+            return tempo_passado >= timedelta(minutes=0)

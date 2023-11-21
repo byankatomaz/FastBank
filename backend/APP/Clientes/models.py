@@ -55,7 +55,7 @@ class Cliente(Base):
         ('PJ', 'Pessoa Jurídica')
     ]
     
-    imagem = StdImageField('Imagem', upload_to='perfis', variations={'thumb': {'width': 480, 'height': 480, 'crop': True}})
+    imagem = StdImageField('Imagem', upload_to='perfis', variations={'thumb': {'width': 480, 'height': 480, 'crop': True}}, blank=True, null=True)
     nome = models.CharField('Nome', max_length=100)
     email = models.EmailField('E-mail', unique=True)
     cpf = models.CharField('CPF', max_length=11)

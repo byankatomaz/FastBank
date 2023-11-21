@@ -22,8 +22,6 @@ class ClienteAdmin(UserAdmin):
     )
 
     list_filter = ('is_staff', 'is_superuser', 'ativo')
-
-
   
     
 
