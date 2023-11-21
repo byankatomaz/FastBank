@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Conta, Cartao, Movimentacao, Extrato, AvaliacaoCredito
+from .models import Conta, Cartao, Movimentacao, Extrato, AvaliacaoCredito, Emprestimo
 
 class CartaoSerializer(serializers.ModelSerializer):
     
@@ -54,8 +54,14 @@ class AvaliacaoCreditoSerializer(serializers.ModelSerializer):
             'id', 
             'conta',
             'limite',
-            'permissao'
+            'permissao',
+            'criacao'
         )
+
+class EmprestimoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Emprestimo
+        fields = ('__all__')
 
 class ContaSerializer(serializers.ModelSerializer):
     

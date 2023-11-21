@@ -17,7 +17,7 @@ Including another URLconf
     token 90016e1cbb9257830ec3ddcc71337903e458cffe
 """
 from django.contrib import admin
-from django.urls import path, include, re_path
+from django.urls import path, include
 from APP.Clientes.urls import routerCli
 from APP.Contas.urls import routerCont
 

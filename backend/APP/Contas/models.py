@@ -103,13 +103,14 @@ class AvaliacaoCredito(Base):
     conta = models.ForeignKey('Conta', on_delete=models.CASCADE)
     limite = models.DecimalField('Limite', max_digits=10, decimal_places=2, blank=True, null=True)
     permissao = models.BooleanField('Permissão', blank=True, null=True)
+    data_solicitacao = models.DateTimeField(auto_now_add=True)
     
     class Meta:
         verbose_name = 'Avaliação de Crédito'
         verbose_name_plural = 'Avaliações de Crédito'
 
     def __str__(self):
-        return self.permissao
+        return str(self.permissao)
 
 
 @receiver(post_save, sender=Cliente)

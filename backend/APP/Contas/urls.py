@@ -5,7 +5,8 @@ from .views import (
         CartaoViewSet,
         MovimentacaoViewSet,
         ExtratoViewSet,
-        AvaliacaoCreditoViewSet
+        AvaliacaoCreditoViewSet,
+        EmprestimoViewSet
     )
 
 routerCont = SimpleRouter()
@@ -14,3 +15,4 @@ routerCont.register('cartao', CartaoViewSet)
 routerCont.register('movimentacao', MovimentacaoViewSet)
 routerCont.register('extrato', ExtratoViewSet)
 routerCont.register('avaliacaoCred', AvaliacaoCreditoViewSet)
+routerCont.register('emprestimo', EmprestimoViewSet)

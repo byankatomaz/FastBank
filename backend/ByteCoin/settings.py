@@ -8,6 +8,12 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
+
+{
+  "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcwMDYwMTE0MywiaWF0IjoxNzAwNTE0NzQzLCJqdGkiOiJiYWYyNmY0NTY3OTA0MzM5YmZiMTUxM2Q2YzBiZTY4NCIsInVzZXJfaWQiOjJ9.OPq_P5IxNqC_6pxLHL_uzuZPFA-xw4GZaClY-NBPOSs",
+  "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNTE1MDQzLCJpYXQiOjE3MDA1MTQ3NDMsImp0aSI6Ijg0NTkzN2FiZjNhOTQ5OGRhZGU0ZGY5ZjM2NTBhZWJkIiwidXNlcl9pZCI6Mn0.VmGv6Rmq1HPcyzZP-iuuuyDcGSQOqUtjPe6lMHlngw0"
+}
+
 """
 from datetime import timedelta
 from pathlib import Path

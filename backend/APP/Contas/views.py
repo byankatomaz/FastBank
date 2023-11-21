@@ -2,6 +2,9 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from datetime import datetime, timedelta, timezone
+import pytz
+
 from rest_framework import status
 
 from .models import (
@@ -9,14 +12,16 @@ from .models import (
     Cartao, 
     Movimentacao, 
     Extrato, 
-    AvaliacaoCredito
+    AvaliacaoCredito,
+    Emprestimo
                      )
 from .serializers import (
     ContaSerializer, 
     CartaoSerializer, 
     MovimentacaoSerializer, 
     ExtratoSerializer, 
-    AvaliacaoCreditoSerializer
+    AvaliacaoCreditoSerializer,
+    EmprestimoSerializer
                           )
 
 class ContaViewSet(viewsets.ModelViewSet):
@@ -95,25 +100,49 @@ class AvaliacaoCreditoViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
 
         try:
-            avaliacao = serializer.save()
-            conta = avaliacao.conta
-            saldo_conta = conta.saldo
+            avaliacao = serializer.validated_data
+            conta = avaliacao['conta']
+            cartao = conta.cartao
+            salario = conta.cliente.salario
             
-            self.avaliando_credito(saldo_conta, conta)
+            ultima_avaliacao = AvaliacaoCredito.objects.filter(conta=conta).order_by('data_solicitacao').first()
+            
+            print(ultima_avaliacao.data_solicitacao)
 
+            if not ultima_avaliacao or self.pode_realizar_avaliacao(ultima_avaliacao.data_solicitacao):
+                self.avaliando_credito(salario, conta, cartao)
+            else:
+                raise Exception("Avaliação de crédito permitida apenas a cada 30 minutos.")
+            
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
-    def avaliando_credito(self, saldo_conta, conta):
-        if saldo_conta >= 500.00:
+    def avaliando_credito(self, salario, conta, cartao):
+        if salario >= 1000.00:
             
-            permissao_credito = True
-            limite = 0.75 * float(saldo_conta)
-            conta.limite = limite
-            AvaliacaoCredito.objects.create(conta=conta, limite=limite, permissao=permissao_credito)
+            limite = 0.5 * float(salario)
+            cartao.limite = limite
+            cartao.save()
             
+            AvaliacaoCredito.objects.create(conta=conta, limite=limite, permissao=True)
+
         else:
-            permissao_credito = False
-            conta.limite = 0
-            AvaliacaoCredito.objects.create(conta=conta, limite=0, permissao=permissao_credito)
+            cartao.limite = 0.00
+            cartao.save()
+            AvaliacaoCredito.objects.create(conta=conta, limite=0.00, permissao=False)
+    
+    def pode_realizar_avaliacao(self, ultima_avaliacao):
+
+        if ultima_avaliacao:
+        
+            avaliacao_datetime = ultima_avaliacao.replace(tzinfo=pytz.timezone("America/Sao_Paulo"))
+
+            tempo_passado = datetime.now(pytz.timezone("America/Sao_Paulo")) - avaliacao_datetime
+            return tempo_passado >= timedelta(minutes=30)
+
+
+class EmprestimoViewSet(viewsets.ModelViewSet):
+    queryset = Emprestimo.objects.all()
+    serializer_class = EmprestimoSerializer

@@ -6,7 +6,7 @@ class ClienteCreateForm(UserCreationForm):
     
     class Meta:
         model = Cliente
-        fields = ['nome', 'email', 'cpf', 'tipo', 'rua', 'bairro', 'cidade', 'estado', 'num', 'cep', 'ativo']
+        fields = ['imagem', 'nome', 'email', 'cpf', 'tipo', 'salario','rua', 'bairro', 'cidade', 'estado', 'num', 'cep', 'ativo']
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -23,4 +23,4 @@ class ClienteChangeForm(UserChangeForm):
     
     class Meta:
         model = Cliente
-        fields = ['nome', 'email', 'cpf', 'tipo', 'rua', 'bairro', 'cidade', 'estado', 'num', 'cep', 'ativo']
+        fields = ['imagem', 'nome', 'email', 'cpf', 'tipo', 'salario', 'rua', 'bairro', 'cidade', 'estado', 'num', 'cep', 'ativo']

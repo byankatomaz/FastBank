@@ -60,6 +60,7 @@ class Cliente(Base):
     email = models.EmailField('E-mail', unique=True)
     cpf = models.CharField('CPF', max_length=11)
     tipo = models.CharField('Tipo', max_length=2, choices=TIPO_CHOICES)
+    salario = models.DecimalField(max_digits=10, decimal_places=2)
     
     rua = models.CharField(max_length=250, blank=False, null=False)
     bairro = models.CharField(max_length=100, null=False)
@@ -69,7 +70,7 @@ class Cliente(Base):
     cep = models.IntegerField(null=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['nome', 'cpf', 'tipo', 'rua', 'bairro', 'cidade', 'estado', 'num', 'cep', 'ativo']
+    REQUIRED_FIELDS = ['imagem', 'nome', 'cpf', 'tipo', 'salario', 'rua', 'bairro', 'cidade', 'estado', 'num', 'cep', 'ativo']
     
     class Meta:
         verbose_name = 'Cliente'
