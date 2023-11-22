@@ -105,7 +105,7 @@ class AvaliacaoCreditoViewSet(viewsets.ModelViewSet):
             cartao = conta.cartao
             salario = conta.cliente.salario
             
-            ultima_avaliacao = AvaliacaoCredito.objects.filter(conta=conta).order_by('data_solicitacao').first()
+            ultima_avaliacao = AvaliacaoCredito.objects.filter(conta=conta).order_by('data_solicitacao').last()
 
             if not ultima_avaliacao or self.pode_realizar_avaliacao(ultima_avaliacao.data_solicitacao):
                 self.avaliando_credito(salario, conta, cartao)
@@ -122,6 +122,7 @@ class AvaliacaoCreditoViewSet(viewsets.ModelViewSet):
             
             limite = 0.5 * float(salario)
             cartao.limite = limite
+            cartao.tipo = 'CD/CC'
             cartao.save()
             
             AvaliacaoCredito.objects.create(conta=conta, limite=limite, permissao=True)
@@ -134,11 +135,16 @@ class AvaliacaoCreditoViewSet(viewsets.ModelViewSet):
     def pode_realizar_avaliacao(self, ultima_avaliacao):
 
         if ultima_avaliacao:
-        
-            avaliacao_datetime = ultima_avaliacao.replace(tzinfo=pytz.timezone("America/Sao_Paulo"))
+            
+            tzinfo = pytz.timezone("America/Sao_Paulo")
+           
+            ultima_avaliacao = ultima_avaliacao.astimezone(tzinfo)
 
-            tempo_passado = datetime.now(pytz.timezone("America/Sao_Paulo")) - avaliacao_datetime
-            return tempo_passado >= timedelta(minutes=0)
+            agora = datetime.now().astimezone(tzinfo)
+
+            tempo_passado = (agora - ultima_avaliacao).total_seconds() / 60
+            
+            return tempo_passado >= 1
 
 
 class EmprestimoViewSet(viewsets.ModelViewSet):
@@ -157,13 +163,12 @@ class EmprestimoViewSet(viewsets.ModelViewSet):
             parcelas = emprestimo['parcelas']
             
             ultimo_emprestimo = AvaliacaoCredito.objects.filter(conta=conta).order_by('criacao').first()
-            
-            self.emprestimo_calculando(valor_solicitado, conta, parcelas)
+        
 
-            # if not ultima_avaliacao or self.pode_realizar_avaliacao(ultima_avaliacao.data_solicitacao):
-            #     
-            # else:
-            #     raise Exception("Avaliação de crédito permitida apenas a cada 30 minutos.")
+            if not ultimo_emprestimo or self.pode_realizar_emprestimo(ultimo_emprestimo.criacao):
+                self.emprestimo_calculando(valor_solicitado, conta, parcelas)        
+            else:
+                raise Exception("Avaliação de crédito permitida apenas a cada 30 minutos.")
             
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         
@@ -172,34 +177,33 @@ class EmprestimoViewSet(viewsets.ModelViewSet):
     
     def emprestimo_calculando(self, valor_solicitado, conta, parcelas):
         
+        valor_minimo = float(conta.cliente.salario) * 0.075
         taxa_juros = 0.075
-        
-        for i in range(1, parcelas+1):
+        if valor_minimo >= valor_solicitado:
             
-            juros = float(valor_solicitado) * taxa_juros * i
+            for i in range(1, parcelas+1):
+                
+                juros = float(valor_solicitado) * taxa_juros * i
+                total_pagar = float(valor_solicitado) + juros
+                
             
-            total_pagar = float(valor_solicitado) + juros
-            
+            pag_mensal = total_pagar / parcelas
+            conta.saldo += valor_solicitado
+            conta.save()
+            Emprestimo.objects.create(conta=conta, valor_solicitado=valor_solicitado, permitido=True, taxa_juros=taxa_juros, pag_mensal=pag_mensal, total_pagar=total_pagar, parcelas=parcelas)
         
-        pag_mensal = total_pagar / parcelas
-        
-        conta.saldo += valor_solicitado
-        
-        conta.save()
-        
-        Emprestimo.objects.create(conta=conta, valor_solicitado=valor_solicitado, taxa_juros=taxa_juros, pag_mensal=pag_mensal, total_pagar=total_pagar, parcelas=parcelas)
-        
-
-        # else:
-        #     cartao.limite = 0.00
-        #     cartao.save()
-        #     AvaliacaoCredito.objects.create(conta=conta, limite=0.00, permissao=False)
+        else:
+            Emprestimo.objects.create(conta=conta, valor_solicitado=valor_solicitado, permitido=False, taxa_juros=taxa_juros, pag_mensal=0, total_pagar=0, parcelas=0)
+            raise Exception("Você não tem os requisitos minimos para o Emprestimo")
     
-    def pode_realizar_avaliacao(self, ultima_avaliacao):
+    def pode_realizar_emprestimo(self, ultima_solicitacao):
 
-        if ultima_avaliacao:
+        if ultima_solicitacao:
         
-            avaliacao_datetime = ultima_avaliacao.replace(tzinfo=pytz.timezone("America/Sao_Paulo"))
-
-            tempo_passado = datetime.now(pytz.timezone("America/Sao_Paulo")) - avaliacao_datetime
-            return tempo_passado >= timedelta(minutes=0)
+            tzinfo = pytz.timezone("America/Sao_Paulo")
+            tempo_solicitacao = datetime.combine(ultima_solicitacao, datetime.min.time())
+            tempo_solicitacao = tzinfo.localize(tempo_solicitacao)
+            agora = datetime.now().astimezone(tzinfo)
+            tempo_passado = (agora - tempo_solicitacao).total_seconds() / 60
+            
+            return tempo_passado >= 1

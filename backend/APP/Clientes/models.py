@@ -75,7 +75,7 @@ class Cliente(Base):
     class Meta:
         verbose_name = 'Cliente'
         verbose_name_plural = 'Clientes'
-        unique_together = ['email']
+        unique_together = ['email', 'cpf']
     
         
     def __str__(self):

@@ -33,7 +33,7 @@ class Conta(Base):
 class Cartao(Base):
     
     TIPO_CHOICES = [
-        ('CC', 'Cartão de Crédito'),
+        ('CD/CC', 'Cartão de Crédito/Débito'),
         ('CD', 'Cartão de Débito')
     ]
     
@@ -88,6 +88,7 @@ class Extrato(Base):
     
 class Emprestimo(Base):
     conta = models.ForeignKey('Conta', on_delete=models.CASCADE)
+    permitido = models.BooleanField(blank=True, null=True)
     valor_solicitado = models.DecimalField('Valor', max_digits=10, decimal_places=2)
     parcelas = models.IntegerField('Parcelas')
     taxa_juros = models.DecimalField('Taxa', max_digits=10, decimal_places=2, blank=True, null=True)
