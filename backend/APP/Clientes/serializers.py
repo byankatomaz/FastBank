@@ -22,6 +22,7 @@ class ClienteSerializer(serializers.ModelSerializer):
             'salario',
             'rua',
             'bairro',
+            'cidade',
             'estado',
             'num',
             'cep',

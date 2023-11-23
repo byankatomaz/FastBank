@@ -11,16 +11,17 @@ class ClienteCreateForm(UserCreationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data['password1'])
-        user.email = self.cleaned_data['username']
+        user.email = self.cleaned_data['email']  # Corrigido aqui
         
         if commit:
             user.save()
         
         return user
+
     
 
 class ClienteChangeForm(UserChangeForm):
     
     class Meta:
         model = Cliente
-        fields = ['imagem', 'nome', 'email', 'cpf', 'tipo', 'salario', 'rua', 'bairro', 'cidade', 'estado', 'num', 'cep', 'ativo']
+        fields = ['imagem', 'nome', 'cpf', 'tipo', 'salario', 'rua', 'bairro', 'cidade', 'estado', 'num', 'cep', 'ativo']

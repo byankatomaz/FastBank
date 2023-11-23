@@ -79,7 +79,7 @@ class Cliente(Base):
     
         
     def __str__(self):
-        return self.username
+        return self.email
     
     objects = ClienteManager()
 
