@@ -137,11 +137,8 @@ class AvaliacaoCreditoViewSet(viewsets.ModelViewSet):
         if ultima_avaliacao:
             
             tzinfo = pytz.timezone("America/Sao_Paulo")
-           
             ultima_avaliacao = ultima_avaliacao.astimezone(tzinfo)
-
             agora = datetime.now().astimezone(tzinfo)
-
             tempo_passado = (agora - ultima_avaliacao).total_seconds() / 60
             
             return tempo_passado >= 1
@@ -162,13 +159,12 @@ class EmprestimoViewSet(viewsets.ModelViewSet):
             valor_solicitado = emprestimo['valor_solicitado']
             parcelas = emprestimo['parcelas']
             
-            ultimo_emprestimo = AvaliacaoCredito.objects.filter(conta=conta).order_by('criacao').first()
+            ultimo_emprestimo = Emprestimo.objects.filter(conta=conta).order_by('data_solicitacao').last()
         
-
-            if not ultimo_emprestimo or self.pode_realizar_emprestimo(ultimo_emprestimo.criacao):
+            if not ultimo_emprestimo or self.pode_realizar_emprestimo(ultimo_emprestimo.data_solicitacao):
                 self.emprestimo_calculando(valor_solicitado, conta, parcelas)        
             else:
-                raise Exception("Avaliação de crédito permitida apenas a cada 30 minutos.")
+                raise Exception("Emprestimo é permitida apenas a cada 30 minutos.")
             
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         
@@ -177,7 +173,7 @@ class EmprestimoViewSet(viewsets.ModelViewSet):
     
     def emprestimo_calculando(self, valor_solicitado, conta, parcelas):
         
-        valor_minimo = float(conta.cliente.salario) * 0.075
+        valor_minimo = float(conta.cliente.salario) * 0.5
         taxa_juros = 0.075
         if valor_minimo >= valor_solicitado:
             
@@ -199,11 +195,10 @@ class EmprestimoViewSet(viewsets.ModelViewSet):
     def pode_realizar_emprestimo(self, ultima_solicitacao):
 
         if ultima_solicitacao:
-        
+            
             tzinfo = pytz.timezone("America/Sao_Paulo")
-            tempo_solicitacao = datetime.combine(ultima_solicitacao, datetime.min.time())
-            tempo_solicitacao = tzinfo.localize(tempo_solicitacao)
+            ultima_solicitacao = ultima_solicitacao.astimezone(tzinfo)
             agora = datetime.now().astimezone(tzinfo)
-            tempo_passado = (agora - tempo_solicitacao).total_seconds() / 60
+            tempo_passado = (agora - ultima_solicitacao).total_seconds() / 60
             
             return tempo_passado >= 1

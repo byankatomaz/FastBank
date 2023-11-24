@@ -49,6 +49,7 @@ urlpatterns = [
 # djoser
 urlpatterns += [
     path('api/v2/', include('djoser.urls')),
+     path('api/v2/auth/', include('djoser.urls.authtoken')),
     path('api/v2/auth/', include('djoser.urls.jwt')),
 ]
 

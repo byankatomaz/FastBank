@@ -94,6 +94,7 @@ class Emprestimo(Base):
     taxa_juros = models.DecimalField('Taxa', max_digits=10, decimal_places=2, blank=True, null=True)
     pag_mensal =  models.DecimalField('Pagamento Mensal', max_digits=10, decimal_places=2, blank=True, null=True)
     total_pagar =  models.DecimalField('Total A Pagar', max_digits=10, decimal_places=2, blank=True, null=True)
+    data_solicitacao = models.DateTimeField(auto_now_add=True)
     
     class Meta:
         verbose_name = 'Empréstimo'
