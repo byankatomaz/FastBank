@@ -146,9 +146,11 @@ def main():
     
         # sleep(1)
         
-        # superuser_creation()
+        superuser_creation()
         
-        # super_user_header = create_auth_JWT('byankatomaz@gmail.com','241204Bm#')
+        super_user_header = create_auth_JWT('byankatomaz@gmail.com','241204Bm#')
+        
+        print(super_user_header)
 
         user1 = cliente_creation('Keven Da Hora', 'dahora@gmail.com', 'kev123#1', '51462773855', 'PF', '15000', 'Rua Jacarezinho', 'Colina das nascentes', 'Campinas', 'São Paulo', 526, 13025625)
         headers_1 = create_auth_JWT('dahora@gmail.com', 'kev123#1')
@@ -161,8 +163,6 @@ def main():
     
         user4 = cliente_creation('Maciel', 'macielJulia@gmail.com', 'macaios23#', '12546253126', 'PF', '25000', 'Rua dos Coqueiros', 'Parque das Aguas', 'Hortolandia', 'São Paulo', 665, 13256245)
         headers_4 = create_auth_JWT('macielJulia@gmail.com', 'macaios23#')
-        
-        print(headers_1)
 
         conta1 = Conta.objects.filter(cliente=user1['id']).first()
         conta2 = Conta.objects.filter(cliente=user2['id']).first()

@@ -42,7 +42,7 @@ def get_file_path(_instance, filename):
 
 class Base(AbstractUser):
     modificacao = models.DateField(auto_now=True)
-    ativo = models.BooleanField(default=True)
+    ativo = models.BooleanField(default=True, blank=True, null=True)
     
     class Meta:
         abstract = True
@@ -55,7 +55,7 @@ class Cliente(Base):
         ('PJ', 'Pessoa Jurídica')
     ]
     
-    imagem = StdImageField('Imagem', upload_to='perfis', variations={'thumb': {'width': 480, 'height': 480, 'crop': True}}, blank=True, null=True)
+    imagem = models.ImageField('Imagem', upload_to='perfis', blank=True, null=True)
     nome = models.CharField('Nome', max_length=100)
     email = models.EmailField('E-mail', unique=True)
     cpf = models.CharField('CPF', max_length=11)

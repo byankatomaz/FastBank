@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;200;300;400&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+    margin: 0;
+    font-family: 'League Spartan', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+*{
+    @apply bg-black
+}
+
+.header {
+    @apply flex justify-between items-center w-full h-20 border fixed bg-black top-0
+}
+
+.container {
+    @apply w-full max-w-5xl m-auto py-8 flex justify-center mt-28 text-white
+  }
+  
+  .container h1 {
+    @apply text-3xl font-bold text-primary mb-4
+  }
+
+.form {
+    @apply flex flex-col items-center gap-5 
+}
+
+.form label{
+    @apply text-white text-xl mb-5
+}
+
+.form input, select {
+    @apply w-80 border border-pink-950 p-3 mb-1 rounded-md
+  }
+  
+  .form button{
+    @apply mt-3
+  }

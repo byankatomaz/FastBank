@@ -9,12 +9,13 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
 from .models import Cliente
-from .serializers import ClienteSerializer
+from .serializers import ClienteSerializer, ClienteLoginSerializer
 
 
 class ClienteViewSet(viewsets.ModelViewSet):
@@ -35,31 +36,37 @@ class ClienteViewSet(viewsets.ModelViewSet):
         
 
 class ClienteLoginViewSet(TokenObtainPairView):
+    
+    serializer_class = ClienteLoginSerializer
+
+    @classmethod
+    def get_extra_actions(cls):
+        return []
+    
     def post(self, request, *args, **kwargs):
-        # Implemente sua lógica de verificação aqui
+        # Implement your logic here
         email = request.data.get('email')
         password = request.data.get('password')
 
-        # Verifique o número de tentativas incorretas
+        # Check the number of incorrect attempts
         cliente = Cliente.objects.filter(username=email).first()
 
         if cliente and cliente.tentativas_login_incorretas >= 3:
-            return Response({"error": "Conta bloqueada devido a muitas tentativas incorretas."}, status=status.HTTP_403_FORBIDDEN)
+            return Response({"error": "Account blocked due to too many incorrect attempts."}, status=status.HTTP_403_FORBIDDEN)
 
-        # Chame a lógica padrão do TokenObtainPairView
+        # Call the default logic of TokenObtainPairView
         response = super().post(request, *args, **kwargs)
 
         if response.status_code == status.HTTP_200_OK:
-            # Login bem-sucedido, redefina as tentativas incorretas
+            # Successful login, reset the incorrect attempts
             if cliente:
                 cliente.tentativas_login_incorretas = 0
                 cliente.save()
 
         elif response.status_code == status.HTTP_401_UNAUTHORIZED:
-            # Senha incorreta, atualize o número de tentativas incorretas
+            # Incorrect password, update the number of incorrect attempts
             if cliente:
                 cliente.tentativas_login_incorretas += 1
                 cliente.save()
 
         return response
-    
