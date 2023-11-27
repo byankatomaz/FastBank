@@ -5,41 +5,64 @@
 
 
 body {
-    margin: 0;
-    font-family: 'League Spartan', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-      sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-*{
-    @apply bg-black
+  margin: 0;
+  font-family: 'League Spartan', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  @apply bg-neutral-900
 }
 
+
 .header {
-    @apply flex justify-between items-center w-full h-20 border fixed bg-black top-0
+  @apply flex justify-between items-center w-full h-20 fixed bg-black top-0 shadow-md shadow-black
+}
+
+.container-signup {
+  @apply min-h-screen w-full flex items-stretch text-white justify-center mt-28 
+}
+
+.container-signup h1 {
+  @apply text-xl font-bold mb-4 text-white  dark:text-white
 }
 
 .container {
-    @apply w-full max-w-5xl m-auto py-8 flex justify-center mt-28 text-white
-  }
-  
-  .container h1 {
-    @apply text-3xl font-bold text-primary mb-4
-  }
+  @apply w-full max-w-5xl m-auto py-8 flex justify-center mt-28 text-white
+}
+
+.container .container-signup h1 {
+  @apply text-3xl font-bold text-primary mb-4
+}
 
 .form {
-    @apply flex flex-col items-center gap-5 
+  @apply flex flex-col gap-5
 }
 
-.form label{
-    @apply text-white text-xl mb-5
+.form label {
+  @apply text-base font-bold mb-4 text-white 
 }
 
-.form input, select {
-    @apply w-80 border border-pink-950 p-3 mb-1 rounded-md
-  }
-  
-  .form button{
-    @apply mt-3
-  }
+.form select{
+  @apply border border-pink-950 p-3 mb-1 rounded-md bg-black block w-full px-4 py-2 mt-2  text-gray-300 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring
+}
+
+.form input {
+  @apply border border-pink-950 p-3 mb-1 rounded-md bg-black block w-full px-4 py-2 mt-2 text-gray-300 focus:border-pink-950 focus:outline-none focus:ring
+}
+
+.form button {
+  @apply mt-3
+}
+
+.divImage{
+  @apply mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-pink-950 border-dashed rounded-md w-52
+}
+
+.labelImage {
+  @apply relative cursor-pointer bg-pink-950 rounded-md font-medium text-white hover:text-gray-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500
+}
+
+.container-form{
+  @apply bg-black p-28 rounded-3xl max-w-4xl  mx-auto shadow-md shadow-black mt-20
+}

@@ -25,7 +25,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
 export function useAuth(){
   const context = useContext(AuthContext);
@@ -35,4 +35,4 @@ export function useAuth(){
   }
 
   return context;
-};
+}

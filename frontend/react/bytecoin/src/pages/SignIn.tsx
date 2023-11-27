@@ -12,7 +12,7 @@ export function SignIn() {
     });
 
     const navigate = useNavigate();
-    const { setAccessToken, accessToken } = useAuth();
+    const { setAccessToken } = useAuth();
 
     const onSubmit: SubmitHandler<LoginCliente> = async (values) => {
         try {
