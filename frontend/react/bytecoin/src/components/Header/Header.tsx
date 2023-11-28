@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from 'components';
 import Logo from '../../images/logo.png';
-import { useAuth } from 'context';
+import { useAuth, useUser } from 'context';
 
 
 type Props = {
@@ -9,7 +9,18 @@ type Props = {
 }
 
 export function Header({ children }: Props) {
-  const { accessToken, logout } = useAuth();
+  const { accessToken, setAccessToken } = useAuth();
+  const { setDataUser } = useUser();
+
+  const navigate = useNavigate()
+
+  const logout = () => {
+    localStorage.removeItem('accessToken');
+    setAccessToken(null);
+    setDataUser(null);
+
+    navigate('/home')
+  };
 
   return (
     <nav className="header">

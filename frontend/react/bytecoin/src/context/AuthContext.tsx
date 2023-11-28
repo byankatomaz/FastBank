@@ -1,9 +1,9 @@
 import { createContext, useContext, ReactNode, useState } from 'react';
+import { useUser } from 'context';
 
 interface AuthContextProps {
   accessToken: string | null;
   setAccessToken: (token: string | null) => void;
-  logout: () => void; 
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -15,13 +15,8 @@ interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps) {
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
-  const logout = () => {
-    localStorage.removeItem('accessToken');
-    setAccessToken(null);
-  };
-
   return (
-    <AuthContext.Provider value={{ accessToken, setAccessToken, logout }}>
+    <AuthContext.Provider value={{ accessToken, setAccessToken }}>
       {children}
     </AuthContext.Provider>
   );
