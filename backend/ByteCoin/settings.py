@@ -103,7 +103,7 @@ DATABASES = {
         'NAME': 'bytecoin',
         'USER': 'root',
         'HOST': 'localhost',
-        'PORT': '3306',
+        'PORT': '8000',
     }
 }
 

@@ -80,11 +80,11 @@ body {
 
 
 .fontDiv {
-  @apply flex w-full items-center gap-16 px-1 py-8 
+  @apply flex w-full items-center py-8 px-1
 }
 
-.custom-image{
+.custom-image {
   background-image: url('./images/ampulhetaEscritorio.jpg');
   height: 80vh;
-  
+
 }
