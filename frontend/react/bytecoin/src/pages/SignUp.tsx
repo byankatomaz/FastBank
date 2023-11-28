@@ -92,7 +92,7 @@ useEffect(() => {
 
   return (
     <>
-      < Header />
+      < Header enable={false} />
       <div className="container-signup" onSubmit={handleSubmit(onSubmit)}>
         <div className="container-form">
           <h1>Cadastre-se</h1>

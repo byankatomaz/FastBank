@@ -9,15 +9,20 @@ export function HomeCliente() {
     const { accessToken, setAccessToken } = useAuth();
 
     useEffect(() => {
-
-        const fetchData = async () => {
-            try {
-                console.log(dataUser)
-                const storedToken = localStorage.getItem('accessToken');
+        console.log("uma vez")
+        const storedToken = localStorage.getItem('accessToken');
 
                 if (storedToken) {
                     setAccessToken(storedToken);
                 } 
+    }, [])
+
+    useEffect(() => {
+
+        async function fetchData() {
+            try {
+                console.log(dataUser)
+                
                 if (accessToken && !dataUser) {
                     const { status, data } = await ClienteService.infoClient(accessToken);
                     console.log(data)
@@ -32,17 +37,23 @@ export function HomeCliente() {
                 console.error('Erro ao obter informações do cliente:', error);
             }
         };
-        if (accessToken && !dataUser) {
+        
+        if (shouldFetchData()) {
             fetchData()
         }
+        
+       
     }, [accessToken, dataUser]);
+
+
+    const shouldFetchData = () => accessToken && !dataUser;
 
 
     return (
         <div>
-            <Header children={dataCliente?.nome} />
+            <Header enable={false} children={dataCliente?.nome} />
             
-            <div className="container flex flex-row items-center justify-between gap-8">
+            <div className="container card flex flex-row items-center justify-between gap-8">
                 <img src={dataCliente?.imagem} className="h-24 w-24 rounded-full"></img>
                 <div>
                     <h1>Saldo bancario</h1>

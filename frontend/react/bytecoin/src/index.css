@@ -3,7 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 body {
   margin: 0;
   font-family: 'League Spartan', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -20,11 +19,11 @@ body {
 }
 
 .container-signup {
-  @apply min-h-screen w-full flex items-stretch text-white justify-center mt-28 
+  @apply min-h-screen w-full flex items-stretch text-white justify-center mt-28
 }
 
 .container-signup h1 {
-  @apply text-xl font-bold mb-4 text-white  dark:text-white
+  @apply text-xl font-bold mb-4 text-white dark:text-white
 }
 
 .container {
@@ -40,22 +39,22 @@ body {
 }
 
 .form label {
-  @apply text-base font-bold mb-4 text-white 
+  @apply text-base font-bold mb-4 text-white
 }
 
-.form select{
-  @apply border border-pink-950 p-3 mb-1 rounded-md bg-black block w-full px-4 py-2 mt-2  text-gray-300 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring
+.form select {
+  @apply border border-pink-950 p-3 mb-1 rounded-md bg-black block w-full px-4 py-2 mt-2 text-gray-300 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring
 }
 
 .form input {
-  @apply border border-pink-950 p-3 mb-1 rounded-md bg-black block w-full px-4 py-2 mt-2 text-gray-300 focus:border-pink-950 focus:outline-none focus:ring
+  @apply border border-pink-950 p-3 mb-1 rounded-md bg-black block w-full px-4 py-2 mt-2 text-gray-300 focus:border-pink-950 focus:outline-none focus:ring lg:w-80
 }
 
 .form button {
   @apply mt-3
 }
 
-.divImage{
+.divImage {
   @apply mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-pink-950 border-dashed rounded-md w-52
 }
 
@@ -63,6 +62,29 @@ body {
   @apply relative cursor-pointer bg-pink-950 rounded-md font-medium text-white hover:text-gray-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500
 }
 
-.container-form{
-  @apply bg-black p-28 rounded-3xl max-w-4xl  mx-auto shadow-md shadow-black mt-20
+.container-form {
+  @apply bg-black p-28 rounded-3xl max-w-4xl mx-auto shadow-md shadow-black mt-20
+}
+
+.card {
+  @apply bg-black rounded-3xl shadow-md shadow-black
+}
+
+.textGradiente {
+  background-image: linear-gradient(to bottom, rgb(187, 38, 12), rgb(138, 26, 6), rgb(104, 4, 4));
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: black;
+}
+
+
+.fontDiv {
+  @apply flex w-full items-center gap-16 px-1 py-8 
+}
+
+.custom-image{
+  background-image: url('./images/ampulhetaEscritorio.jpg');
+  height: 80vh;
+  
 }

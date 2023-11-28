@@ -6,9 +6,10 @@ import { useAuth, useUser } from 'context';
 
 type Props = {
   children?: React.ReactNode;
+  enable: boolean;
 }
 
-export function Header({ children }: Props) {
+export function Header({ children, enable }: Props) {
   const { accessToken, setAccessToken } = useAuth();
   const { setDataUser } = useUser();
 
@@ -25,22 +26,27 @@ export function Header({ children }: Props) {
   return (
     <nav className="header">
       <div className="w-full h-full m-auto flex items-center justify-between">
-        <img src={Logo} alt="Logo" />
+        <Link to={'/home'}><img src={Logo} alt="Logo" /></Link>
 
-        {accessToken ? ( // Se o usuário estiver autenticado
+        {accessToken ? (
           <div className="flex items-center">
             <p className="mr-4 text-white">Bem-vindo, {children}</p>
             <Button onClick={logout}>Logout</Button>
           </div>
-        ) : ( // Se o usuário não estiver autenticado
-          <div className="flex justify-between items-center">
-            <Link to="/signIn">
-              <Button>LOGIN</Button>
-            </Link>
-            <Link to="/signUp">
-              <Button variant="dark">ABRIR MINHA CONTA</Button>
-            </Link>
-          </div>
+        ) : (
+          enable === true ? (
+            <div className="flex justify-between items-center">
+              <Link to="/signIn">
+                <Button>LOGIN</Button>
+              </Link>
+              <Link to="/signUp">
+                <Button variant="dark" className="h-20">ABRIR MINHA CONTA</Button>
+              </Link>
+            </div>
+          ) : (
+            ""
+          )
+          
         )}
       </div>
     </nav>
