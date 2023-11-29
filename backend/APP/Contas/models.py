@@ -63,6 +63,7 @@ class Movimentacao(Base):
     
     conta_origem = models.ForeignKey('Conta', on_delete=models.CASCADE, related_name='movimentacoes_origem')
     conta_destino = models.ForeignKey('Conta', on_delete=models.CASCADE, related_name='movimentacoes_destino', blank=True, null=True)
+    
     valor = models.DecimalField('valor', max_digits=10, decimal_places=2)
     tipo_movimentacao = models.CharField('Tipo', max_length=20, choices=MOV_TIPO_CHOICES)
     
@@ -84,6 +85,19 @@ class Extrato(Base):
         
     def __str__(self):
         return f"Extrato {self.id} da Conta {self.conta.numero}"
+
+
+class ExtratoCartao(Base):
+    cartao = models.ForeignKey('Cartao', related_name='extratoCartao', on_delete=models.CASCADE)
+    movimentacaoCartao = models.ManyToManyField(Movimentacao, related_name='movimentacaoCartao')
+
+
+    class Meta:
+        verbose_name = 'Extrato Cartao'
+        verbose_name_plural = 'Extratos Cartao'
+        
+    def __str__(self):
+        return f"Extrato {self.id} do Cartão {self.cartao}"
     
     
 class Emprestimo(Base):
@@ -139,10 +153,25 @@ def criar_extrato(sender, instance, created, **kwargs):
     
     if created:
         conta = instance.conta_origem
+        cartao = instance.conta_origem.cartao
         extrato_existente = Extrato.objects.filter(conta=conta).first()
-
-        if extrato_existente:
-            extrato_existente.movimentacoes.add(instance)
-        else:
-            extrato = Extrato.objects.create(conta=conta)
-            extrato.movimentacoes.add(instance)
+        
+        if instance.tipo_movimentacao == 'PAG':
+            extrato_existe = ExtratoCartao.objects.filter(cartao=cartao).first()
+            
+            if extrato_existe:
+                extrato_existe.movimentacaoCartao.add(instance)
+            else:
+                extrato = ExtratoCartao.objects.create(cartao=cartao)
+                extrato.movimentacaoCartao.add(instance)
+        
+        if instance.tipo_movimentacao == 'TED' or instance.tipo_movimentacao == 'PIX' or instance.tipo_movimentacao == 'DEP':
+            conta_destino = instance.conta_destino
+            extrato_destino = Extrato.objects.create(conta=conta_destino)
+            extrato_destino.movimentacoes.add(instance)
+            
+            if extrato_existente:
+                extrato_existente.movimentacoes.add(instance)
+            else:
+                extrato = Extrato.objects.create(conta=conta)
+                extrato.movimentacoes.add(instance)

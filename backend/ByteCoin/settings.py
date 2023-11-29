@@ -103,7 +103,7 @@ DATABASES = {
         'NAME': 'bytecoin',
         'USER': 'root',
         'HOST': 'localhost',
-        'PORT': '8000',
+        'PORT': '3306',
     }
 }
 
@@ -160,17 +160,16 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.TokenAuthentication'
-        # 'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
-        # 'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ),
-    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination', 'PAGE_SIZE': 2,
     'DEFAULT_THROTTLE_CLASSES':(
+        'rest_framework.throttling.AnonRateThrottle',
         'rest_framework.throttling.UserRateThrottle',
     ),
     'DEFAULT_THROTTLE_RATES': {
+        'anon': '3/minute',
         'user':'10/minute'
     },
     'DEFAULT_PARSER_CLASSES': (

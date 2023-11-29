@@ -13,6 +13,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.contrib.auth.hashers import check_password, make_password
 
 from .models import Cliente
 from .serializers import ClienteSerializer, ClienteLoginSerializer
@@ -26,6 +27,9 @@ class ClienteViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        
+        serializer.validated_data['password'] = make_password(serializer.validated_data['password'])
+        
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
 
@@ -47,18 +51,16 @@ class ClienteLoginViewSet(TokenObtainPairView):
         # Implement your logic here
         email = request.data.get('email')
         password = request.data.get('password')
-
-        # Check the number of incorrect attempts
+        
         cliente = Cliente.objects.filter(username=email).first()
 
         if cliente and cliente.tentativas_login_incorretas >= 3:
             return Response({"error": "Account blocked due to too many incorrect attempts."}, status=status.HTTP_403_FORBIDDEN)
 
-        # Call the default logic of TokenObtainPairView
         response = super().post(request, *args, **kwargs)
 
         if response.status_code == status.HTTP_200_OK:
-            # Successful login, reset the incorrect attempts
+
             if cliente:
                 cliente.tentativas_login_incorretas = 0
                 cliente.save()

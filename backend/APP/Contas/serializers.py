@@ -1,8 +1,30 @@
 from rest_framework import serializers
 
-from .models import Conta, Cartao, Movimentacao, Extrato, AvaliacaoCredito, Emprestimo
+from .models import Conta, Cartao, Movimentacao, Extrato, AvaliacaoCredito, Emprestimo, ExtratoCartao
 
+
+class MovimentacaoSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Movimentacao
+        fields = ('__all__')
+        
+        
+class ExtratoCartaoSerializer(serializers.ModelSerializer):
+    
+    movimentacaoCartao = MovimentacaoSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = ExtratoCartao
+        fields = (
+            'id', 
+            'cartao', 
+            'movimentacaoCartao'
+        )
+        
 class CartaoSerializer(serializers.ModelSerializer):
+    
+    extratoCartao = ExtratoCartaoSerializer(many=True, read_only=True)
     
     class Meta:
         model = Cartao
@@ -15,22 +37,8 @@ class CartaoSerializer(serializers.ModelSerializer):
             'limite',
             'vencimento',
             'criacao',
-            'ativo'
-        )
-
-
-class MovimentacaoSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = Movimentacao
-        fields = (
-            'id',
-            'conta_origem',
-            'conta_destino',
-            'valor',
-            'tipo_movimentacao',
-            'criacao',
             'ativo',
+            'extratoCartao'
         )
 
 
@@ -45,6 +53,7 @@ class ExtratoSerializer(serializers.ModelSerializer):
             'conta', 
             'movimentacoes'
         )
+        
 
 class AvaliacaoCreditoSerializer(serializers.ModelSerializer):
 

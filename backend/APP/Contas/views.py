@@ -1,8 +1,7 @@
 from rest_framework import viewsets
-from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime
 import pytz
 
 from rest_framework import status
@@ -13,7 +12,8 @@ from .models import (
     Movimentacao, 
     Extrato, 
     AvaliacaoCredito,
-    Emprestimo
+    Emprestimo,
+    ExtratoCartao
                      )
 from .serializers import (
     ContaSerializer, 
@@ -21,18 +21,13 @@ from .serializers import (
     MovimentacaoSerializer, 
     ExtratoSerializer, 
     AvaliacaoCreditoSerializer,
-    EmprestimoSerializer
+    EmprestimoSerializer,
+    ExtratoCartaoSerializer
                           )
 
 class ContaViewSet(viewsets.ModelViewSet):
     queryset = Conta.objects.all()
     serializer_class = ContaSerializer
-    
-    @action(detail=True, methods=['get'])
-    def cartao(self, request, pk=None):
-        conta = self.get_object()
-        serializer = CartaoSerializer(conta.cartao.all(), many=True)
-        return Response(serializer.data)
     
 
 class CartaoViewSet(viewsets.ModelViewSet):
@@ -53,24 +48,43 @@ class MovimentacaoViewSet(viewsets.ModelViewSet):
             conta_origem = movimentacao.conta_origem
             conta_destino = movimentacao.conta_destino
             saldo_conta = conta_origem.saldo
+            cartao = conta_origem.cartao
 
-            self.realizar_movimentacao(conta_origem, conta_destino, saldo_conta, movimentacao.tipo_movimentacao, movimentacao.valor)
+            self.realizar_movimentacao(conta_origem, conta_destino, saldo_conta, movimentacao.tipo_movimentacao, movimentacao.valor, cartao)
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
-    def realizar_movimentacao(self, conta_origem, conta_destino, saldo_conta, tipo_movimentacao, valor):
+    def realizar_movimentacao(self, conta_origem, conta_destino, saldo_conta, tipo_movimentacao, valor, cartao):
         match tipo_movimentacao:
             case "DEP":
                 self.realizar_deposito(conta_origem, valor)
             case "TED":
                 self.realizar_transferencia(conta_origem, conta_destino, valor, saldo_conta)
+            case "PIX":
+                self.realizar_transferencia(conta_origem, conta_destino, valor, saldo_conta)
+            case "PAG":
+                self.realizar_pagamento(conta_origem, valor, cartao)
 
     def realizar_deposito(self, conta_origem, valor):
         conta_origem.saldo += valor
         conta_origem.save()
+        
+    
+    def realizar_pagamento(self, conta_origem, valor, cartao):
+        
+        if cartao.limite >= valor:
+        
+            cartao.limite -= valor
+            
+            conta_origem.save()
+            cartao.save()
+        
+        else:
+            raise Exception("Limite insuficiente")   
+        
         
     def realizar_transferencia(self, conta_origem, conta_destino, valor, saldo_conta):
         
@@ -89,7 +103,12 @@ class MovimentacaoViewSet(viewsets.ModelViewSet):
 class ExtratoViewSet(viewsets.ModelViewSet):
     queryset = Extrato.objects.all()
     serializer_class = ExtratoSerializer
-    
+
+
+class ExtratoCartaoViewSet(viewsets.ModelViewSet):
+    queryset = ExtratoCartao.objects.all()
+    serializer_class = ExtratoCartaoSerializer
+
 
 class AvaliacaoCreditoViewSet(viewsets.ModelViewSet):
     queryset = AvaliacaoCredito.objects.all()
