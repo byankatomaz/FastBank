@@ -170,7 +170,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_THROTTLE_RATES': {
         'anon': '3/minute',
-        'user':'10/minute'
+        'user':'100/minute'
     },
     'DEFAULT_PARSER_CLASSES': (
         'rest_framework.parsers.JSONParser',

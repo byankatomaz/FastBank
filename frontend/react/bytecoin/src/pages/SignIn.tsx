@@ -10,42 +10,35 @@ import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 
-type Props = {
-    errorLogin: boolean
-}
 
-export function SignIn({ errorLogin }: Props) {
+export function SignIn() {
     const { register, handleSubmit } = useForm({
         resolver: ClienteLoginResolver,
     });
 
-    const [open, setOpen] = useState(true)
+    const [open, setOpen] = useState(false)
 
     const cancelButtonRef = useRef(null)
     const navigate = useNavigate();
     const { setAccessToken } = useAuth();
-    // const [ erroLogin, setErroLogin ] = useState();
 
     const onSubmit: SubmitHandler<LoginCliente> = async (values) => {
         try {
             const { status, data } = await ClienteService.loginClient(values);
+
             if (status === 200 && data['access']) {
                 setAccessToken(data['access']);
                 localStorage.setItem('accessToken', data['access']);
                 navigate('/homecliente');
-            } else {
-                errorLogin = true
             }
         } catch (error) {
-            errorLogin = true
+            setOpen(true)
             console.error('Erro ao logar o cliente:', error);
         }
     };
 
     return (
         <>
-
-
             <Transition.Root show={open} as={Fragment}>
                 <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
                     <Transition.Child

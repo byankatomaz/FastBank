@@ -11,10 +11,9 @@ export function HomeCliente() {
     useEffect(() => {
         console.log("uma vez")
         const storedToken = localStorage.getItem('accessToken');
-
-                if (storedToken) {
-                    setAccessToken(storedToken);
-                } 
+            if (storedToken) {
+                setAccessToken(storedToken);
+            } 
     }, [])
 
     useEffect(() => {
@@ -25,7 +24,7 @@ export function HomeCliente() {
                 
                 if (accessToken && !dataUser) {
                     const { status, data } = await ClienteService.infoClient(accessToken);
-                    console.log(data)
+                    console.log('data: aaaaaaaaaaaaaaaaaaaaaa: ', data)
                     setDataCliente(data)
                     if (status === 200) {
                         const response = await ClienteService.ContaClient(accessToken, data.id);
@@ -43,7 +42,7 @@ export function HomeCliente() {
         }
         
        
-    }, [accessToken, dataUser]);
+    }, [accessToken]);
 
 
     const shouldFetchData = () => accessToken && !dataUser;
