@@ -153,7 +153,10 @@ def criar_extrato(sender, instance, created, **kwargs):
     
     if created:
         conta = instance.conta_origem
-        cartao = instance.conta_origem.cartao
+        
+        if conta:
+            cartao = conta.cartao
+            
         extrato_existente = Extrato.objects.filter(conta=conta).first()
         
         if instance.tipo_movimentacao == 'PAG':
@@ -165,10 +168,12 @@ def criar_extrato(sender, instance, created, **kwargs):
                 extrato = ExtratoCartao.objects.create(cartao=cartao)
                 extrato.movimentacaoCartao.add(instance)
         
-        if instance.tipo_movimentacao == 'TED' or instance.tipo_movimentacao == 'PIX' or instance.tipo_movimentacao == 'DEP':
+        if instance.tipo_movimentacao in ['TED', 'PIX', 'DEP']:
             conta_destino = instance.conta_destino
-            extrato_destino = Extrato.objects.create(conta=conta_destino)
-            extrato_destino.movimentacoes.add(instance)
+            
+            if conta_destino:
+                extrato_destino = Extrato.objects.create(conta=conta_destino)
+                extrato_destino.movimentacoes.add(instance)
             
             if extrato_existente:
                 extrato_existente.movimentacoes.add(instance)

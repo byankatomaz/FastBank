@@ -7,7 +7,13 @@ class MovimentacaoSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Movimentacao
-        fields = ('__all__')
+        fields = (
+            'id', 
+            'conta_origem', 
+            'conta_destino',
+            'valor', 
+            'tipo_movimentacao'
+        )
         
         
 class ExtratoCartaoSerializer(serializers.ModelSerializer):
