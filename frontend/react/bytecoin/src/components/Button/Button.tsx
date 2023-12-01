@@ -17,7 +17,7 @@ export function Button({ type='button', children, className, variant, onClick } 
     if (variant === 'grayPri') bgColor = 'bg-grayPri hover:bg-grayLight transition-all text-white px-6 py-2 leading-5 text-white transition-colors duration-200 transform focus:outline-none focus:bg-gray-600'
 
     return(
-        <button type={type} onClick={onClick} className={classNames('px-4 font-medium', bgColor, className)}>
+        <button type={type} onClick={onClick} className={classNames('px-8 font-medium flex justify-center items-center', bgColor, className)}>
             {children}
         </button>
     )

@@ -65,7 +65,7 @@ export function Home() {
                 </div>
             </div>
 
-            <Header enable={true} />
+            <Header login={true} signUp={true} />
         </div>
     )
 }

@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { ClienteService } from "services";
 import { ClienteLoginResolver } from "validations";
 import { useAuth } from "context";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ampulheta from "../images/ampulheta.jpg"
 import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
@@ -107,15 +107,15 @@ export function SignIn() {
                 </Dialog>
             </Transition.Root>
 
-            <div className="w-full lg:w-12/12 bg-black lg:flex flex items-center justify-center">
-                <div className="min-h-screen flex items-stretch text-white">
-                    <div className="lg:flex hidden bg-gray-500 bg-no-repeat relative bg-cover  items-center" style={{ backgroundImage: `url(${ampulheta})` }}>
+            <div className="w-full lg:w-12/12 bg-black lg:flex">
+                <div className="min-h-screen flex items-stretch text-white justify-start flex-1">
+                    <div className="lg:flex hidden bg-gray-500 bg-no-repeat relative bg-cover items-center" style={{ backgroundImage: `url(${ampulheta})` }}>
                         <div className="absolute bg-black opacity-60 h-full inset-0 z-0"></div>
                         <div className="w-full px-24 z-10">
-                            <h1 className="text-5xl font-bold text-left tracking-wide">Estamos felizes de te ver novamente</h1>
+                            <h1 className="text-5xl font-bold text-left tracking-wide">Estamos felizes em te ver novamente</h1>
                         </div>
                     </div>
-                    <div className="max-w-md w-full p-16 flex flex-col items-center justify-center">
+                    <div className="max-w-md w-full p-16 mx-auto flex flex-col items-center justify-center">
                         <h2 className="text-2xl font-semibold text-white text-center">Login</h2>
                         <form onSubmit={handleSubmit(onSubmit)} className="form">
                             <div className="mb-4">
@@ -125,6 +125,9 @@ export function SignIn() {
                             <div className="mb-4">
                                 <label htmlFor="password" className="text-white">Password</label>
                                 <input {...register("password")} type="password" id="password" placeholder="Senha" />
+                                <div>
+                                    <p>Você não tem uma conta? Acesse:  <Link to={'/signUp'} style={{ color: '#ca170a' }}>Cadastrar</Link></p>
+                                </div>
                             </div>
                             <div className="flex justify-center">
                                 <Button type="submit" variant="dark" className="w-20 h-12 rounded">Logar</Button>
@@ -133,7 +136,7 @@ export function SignIn() {
                     </div>
                 </div>
             </div>
-            <Header enable={false} />
+            <Header login={false} signUp={true} />
         </>
     );
 }

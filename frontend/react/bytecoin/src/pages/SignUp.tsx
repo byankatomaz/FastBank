@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ClienteService } from "services";
 import { ClienteResolver } from "validations";
+import Swal from 'sweetalert2'
+import 'sweetalert2/src/sweetalert2.scss'
 
 export function SignUp() {
   const { register, handleSubmit, setValue } = useForm({
@@ -15,6 +17,22 @@ export function SignUp() {
   const [cep, setCep] = useState<string | undefined>(undefined)
 
   const [endereco, setEndereco] = useState({})
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "center",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+  });
+
+  const cadastrar = () => {
+    Toast.fire({
+      title: "Good job!",
+      text: "You clicked the button!",
+      icon: "success"
+    });
+  }
 
   const searchCep = async () => {
 
@@ -51,7 +69,10 @@ export function SignUp() {
 
   }
 
+
+
   const onSubmit: SubmitHandler<CreateCliente> = async (values) => {
+    
 
     try {
       const { status, data } = await ClienteService.createClient(values);
@@ -92,7 +113,7 @@ useEffect(() => {
 
   return (
     <>
-      < Header enable={false} />
+      < Header login={true} signUp={false} />
       <div className="container-signup" onSubmit={handleSubmit(onSubmit)}>
         <div className="container-form">
           <h1>Cadastre-se</h1>
@@ -172,7 +193,7 @@ useEffect(() => {
               <div className="divImage">
                 <div className="space-y-1 text-center">
 
-                  <div className="flex text-sm text-black mb-2">
+                  <div className="flex text-sm justify-center m-2">
                     <label htmlFor="imagem" className="labelImage">
                       <span className="p-3">Upload a file</span>
                       <input {...register('imagem')} type="file" id="imagem" name="imagem" onChange={handleImageChange} accept="image/*" className="sr-only" />
@@ -189,7 +210,7 @@ useEffect(() => {
             </div>
 
             <div className="flex justify-end mt-6">
-              <Button type='submit' variant='dark'>Cadastrar</Button>
+              <Button type='submit' variant='dark' onClick={cadastrar}>Cadastrar</Button>
             </div>
 
           </form>

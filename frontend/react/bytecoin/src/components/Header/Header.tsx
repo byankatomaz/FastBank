@@ -6,10 +6,11 @@ import { useAuth, useUser } from 'context';
 
 type Props = {
   children?: React.ReactNode;
-  enable: boolean;
+  login: boolean;
+  signUp: boolean;
 }
 
-export function Header({ children, enable }: Props) {
+export function Header({ children, login, signUp }: Props) {
   const { accessToken, setAccessToken } = useAuth();
   const { setDataUser } = useUser();
 
@@ -34,19 +35,20 @@ export function Header({ children, enable }: Props) {
             <Button onClick={logout}>Logout</Button>
           </div>
         ) : (
-          enable === true ? (
+          (login === true || signUp === true) && (
             <div className="flex justify-between items-center">
-              <Link to="/signIn">
-                <Button>LOGIN</Button>
-              </Link>
-              <Link to="/signUp">
-                <Button variant="dark" className="h-20">ABRIR MINHA CONTA</Button>
-              </Link>
+              {login === true && (
+                <Link to="/signIn">
+                  <Button>LOGIN</Button>
+                </Link>
+              )}
+              {signUp === true && (
+                <Link to="/signUp">
+                  <Button variant="dark" className="h-20">ABRIR MINHA CONTA</Button>
+                </Link>
+              )}
             </div>
-          ) : (
-            ""
           )
-          
         )}
       </div>
     </nav>
