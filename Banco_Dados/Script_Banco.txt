@@ -1,11 +1,46 @@
+Consegue realizar a normalização dos dados até a terceira forma normal?  (Critico) Consegue teorizar as formas normais necessárias para criar um banco de dados bem estruturado?  (Desejável)
 
---CRIANDO DATA BASE
+Banco de dados não normalizado
 
-CREATE DATABASE bytecoin
 
--- Tabela Cliente
+Compreende e cria os relacionamentos entre as tabelas de forma correta?  (Critico) Consegue descrever, se apoiando nos conceitos teóricos sobre relacionamentos, cada tipo de relacionamento que possui em seu banco de dados?   (Desejável)
+
+
+Não realizou corretamente os relacionamos N-para-N
+
+Modelou corretamente o banco de dados a partir do levantamento de requisitos? (Critico) Utilizou o conhecimento teórico para arquiteturar e construir o banco de dados?  (Desejável)
+
+Faltou aplicar normalização e corrigir os relacionamentos N para N
+
+
+Consegue utilizar os comandos de definição do banco de dados de forma correta?  (Critico) Descreve corretamente cada comando de definição de dados se apoiando na teoria passada em sala de aula?  (Desejável)
+
+corrigir a constrain auto_increment e aplicar o use bytecoin apos o comando de criar o banco de dados
+
+
+Atentou-se aos requisitos do projeto, sem ocasionar desvios?  (Critico) Soube adequar o banco de dados de acordo com os detalhes elaborados no diagrama entidade relacionamento utilizando corretamente todos os conceitos teóricos trabalhados em aula?  (Desejável)
+
+Banco de dados não normalizado
+
+
+Criou diagramas e a codificação do banco de dados de forma coerente com os requisitos?  (Critico) Descreveu e documentou todas as etapas da construção do banco de dados abordando o máximo de detalhes possível?  (Desejável)
+
+Não aplicou normalização
+
+
+
+
+-- CRIAÇÃO DE DATABASE
+CREATE DATABASE bytecoin;
+-- END CRIAÇÃO DE DATABASE
+
+-- CRIAÇÃO DE TABELAS
+
+USE bytecoin;
+
+-- Criando a tabela Cliente
 CREATE TABLE Cliente (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
     imagem VARCHAR(255),
     nome VARCHAR(100) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
@@ -20,73 +55,220 @@ CREATE TABLE Cliente (
     cep INTEGER
 );
 
--- Tabela Contato
+-- Tabela Criando a tabela Contato
 CREATE TABLE Contato (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
     numero VARCHAR(11) NOT NULL,
     cliente_id INTEGER REFERENCES Cliente(id)
 );
 
--- Tabela Conta
+-- Criando a tabela Conta
 CREATE TABLE Conta (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
     cliente_id INTEGER UNIQUE REFERENCES Cliente(id),
     saldo DECIMAL(10, 2) NOT NULL,
     agencia VARCHAR(4) NOT NULL,
     numero VARCHAR(8) UNIQUE NOT NULL
 );
 
--- Tabela Cartao
+-- Criando a tabela Cartão
 CREATE TABLE Cartao (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
     numero VARCHAR(16) UNIQUE NOT NULL,
     cvv VARCHAR(3) UNIQUE NOT NULL,
-    tipo VARCHAR(10) CHECK (tipo IN ('CD/CC', 'CD')) NOT NULL,
-    conta_id INTEGER UNIQUE REFERENCES Conta(id),
+    tipo ENUM('CD/CC', 'CD') NOT NULL,
+    conta_id INTEGER UNIQUE,
     limite DECIMAL(10, 2) NOT NULL,
-    vencimento DATE NOT NULL
+    vencimento DATE NOT NULL,
+    FOREIGN KEY (conta_id) REFERENCES Conta(id)
 );
 
--- Tabela Movimentacao
+
+-- Criando a tabela Movimentação
 CREATE TABLE Movimentacao (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
     conta_origem_id INTEGER REFERENCES Conta(id),
     conta_destino_id INTEGER REFERENCES Conta(id),
     valor DECIMAL(10, 2) NOT NULL,
-    tipo_movimentacao VARCHAR(20) CHECK (tipo_movimentacao IN ('TED', 'DEP', 'PIX', 'PAG')) NOT NULL
-
+    tipo_movimentacao ENUM('TED', 'DEP', 'PIX', 'PAG') NOT NULL
 );
 
--- Tabela Extrato
+-- Criando a tabela Extrato
 CREATE TABLE Extrato (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    conta_id INTEGER REFERENCES Conta(id)
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    conta_id INTEGER REFERENCES Movimentacao(conta_origem_id),
+    movimentacao_id INTEGER REFERENCES Movimentacao(id)
 );
 
--- Tabela Emprestimo
+-- Criando a tabela Emprestimo
 CREATE TABLE Emprestimo (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
     conta_id INTEGER REFERENCES Conta(id),
     permitido BOOLEAN,
     valor_solicitado DECIMAL(10, 2) NOT NULL,
     parcelas INTEGER NOT NULL,
     taxa_juros DECIMAL(10, 2),
     pag_mensal DECIMAL(10, 2),
-    total_pagar DECIMAL(10, 2),
+    valor_total DECIMAL(10, 2),
     data_solicitacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabela AvaliacaoCredito
+-- Criando a tabela AvaliacaoCredito
 CREATE TABLE AvaliacaoCredito (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
     conta_id INTEGER REFERENCES Conta(id),
     limite DECIMAL(10, 2),
     permissao BOOLEAN,
     data_solicitacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- END CRIAÇÃO DE TABELAS
 
--- INSERÇÃO DE DADOS
+-- CRIAÇÃO DE TRIGGERS
+
+-- Trigger para criar o emprestimo quando a pessoa colocar apenas o id da conta, valor e as parcelas
+DELIMITER //
+CREATE TRIGGER emprestimo_auto
+BEFORE INSERT ON Emprestimo
+FOR EACH ROW
+BEGIN
+    DECLARE valor_minimo DECIMAL(10, 2);
+    DECLARE taxa_juros DECIMAL(10, 2);
+    DECLARE total_pagar DECIMAL(10, 2);
+    DECLARE pag_mensal DECIMAL(10, 2);
+
+    -- Obtém o valor mínimo baseado no salário do cliente associado à conta
+    SELECT cliente.salario * 0.5 INTO valor_minimo
+    FROM Conta
+    INNER JOIN Cliente ON Conta.cliente_id = Cliente.id
+    WHERE Conta.id = NEW.conta_id;
+
+    -- Calcula a taxa de juros
+    SET taxa_juros = 0.08;
+
+    -- Calcula o total a pagar
+    SET total_pagar = NEW.valor_solicitado + (NEW.valor_solicitado * taxa_juros);
+
+    -- Calcula a parcela mensal
+    SET pag_mensal = total_pagar / NEW.parcelas;
+
+    -- Atualiza os campos na nova entrada da tabela Emprestimo
+    SET NEW.permitido = (valor_minimo >= NEW.valor_solicitado);
+    SET NEW.taxa_juros = taxa_juros;
+    SET NEW.pag_mensal = pag_mensal;
+    SET NEW.valor_total = total_pagar;
+    SET NEW.data_solicitacao = CURRENT_TIMESTAMP;
+    
+    -- Atualiza o saldo na tabela Conta associada ao empréstimo
+    IF NEW.permitido THEN
+        UPDATE Conta
+        SET saldo = saldo + NEW.valor_solicitado
+        WHERE id = NEW.conta_id;
+    END IF;
+END;
+DELIMITER ;
+
+
+-- Trigger para criar a Avaliação de Credito quando a pessoa colocar apenas o id da conta, e depois calcular tudo baseado nas informações do banco
+DELIMITER //
+CREATE TRIGGER avaliacao_credito_auto
+BEFORE INSERT ON AvaliacaoCredito
+FOR EACH ROW
+BEGIN
+    DECLARE salario DECIMAL(10, 2);
+    DECLARE limite DECIMAL(10, 2);
+    DECLARE tipo_cartao VARCHAR(10);
+    
+    -- Obtém o salário do cliente associado à conta
+    SELECT cliente.salario INTO salario
+    FROM Conta
+    INNER JOIN Cliente ON Conta.cliente_id = Cliente.id
+    WHERE Conta.id = NEW.conta_id;
+    
+    -- Calcula o limite e o tipo do cartão
+    IF salario >= 1000.00 THEN
+        SET limite = 0.5 * salario;
+        SET tipo_cartao = 'CD/CC';
+    ELSE
+        SET limite = 0.00;
+        SET tipo_cartao = NULL;
+    END IF;
+    
+    -- Atualiza os campos na nova entrada da tabela AvaliacaoCredito
+    SET NEW.limite = limite;
+    SET NEW.permissao = (salario >= 1000.00);
+    SET NEW.data_solicitacao = CURRENT_TIMESTAMP;
+    
+    -- Atualiza o limite e tipo do cartão na tabela Cartao associada à conta
+    UPDATE Cartao
+    SET limite = limite, tipo = tipo_cartao
+    WHERE conta_id = NEW.conta_id;
+END;
+DELIMITER ;
+
+
+-- Trigger para criar o Extrato conforme as movimentações
+DELIMITER //
+CREATE TRIGGER criar_extrato
+AFTER INSERT ON Movimentacao
+FOR EACH ROW
+BEGIN
+    DECLARE conta_id_origem INT;
+    DECLARE conta_id_destino INT;
+
+    SET conta_id_origem = NEW.conta_origem_id;
+
+    -- Atualiza ou insere a entrada para a conta de origem
+    INSERT INTO Extrato (conta_id, movimentacao_id)
+    VALUES (conta_id_origem, NEW.id)
+    ON DUPLICATE KEY UPDATE movimentacao_id = NEW.id;
+
+    -- Se a movimentação é do tipo TED, PIX ou DEP, atualiza ou insere a entrada para a conta de destino
+    IF NEW.tipo_movimentacao IN ('TED', 'PIX', 'DEP') THEN
+        SET conta_id_destino = NEW.conta_destino_id;
+
+        INSERT INTO Extrato (conta_id, movimentacao_id)
+        VALUES (conta_id_destino, NEW.id)
+        ON DUPLICATE KEY UPDATE movimentacao_id = NEW.id;
+    END IF;
+END;
+DELIMETER ;
+
+
+-- Trigger para criar a Conta e o Cartão assim que um Cliente é colocado no banco de dados
+CREATE TRIGGER criar_conta_cartao AFTER INSERT ON Cliente
+FOR EACH ROW
+BEGIN
+    DECLARE numeroConta INT;
+    DECLARE numeroCartao INT;
+    DECLARE cvv INT;
+    DECLARE vencimento DATE;
+    DECLARE contaExistente INT;
+
+    -- Lógica para gerar números aleatórios
+    INSERT INTO Conta (cliente_id, saldo, agencia, numero)
+    SELECT NEW.id, 0.0, '2412', FLOOR(RAND() * (99999999 - 10000000 + 1) + 10000000)
+    FROM dual
+    WHERE NOT EXISTS (SELECT 1 FROM Conta WHERE numero = numeroConta);
+
+    -- Obter o ID da última inserção na tabela Conta
+    SET @lastContaID = LAST_INSERT_ID();
+
+    -- Inserir automaticamente na tabela Cartao
+    INSERT INTO Cartao (numero, cvv, tipo, conta_id, limite, vencimento)
+    SELECT FLOOR(RAND() * (9999999999999999 - 1000000000000000 + 1) + 1000000000000000), 
+           FLOOR(RAND() * (999 - 100 + 1) + 100), 
+           'CD', 
+           @lastContaID, 
+           0.0, 
+           CURRENT_DATE() + INTERVAL 3 YEAR;
+
+END;
+DELIMITER ;
+
+-- END CRIAÇÃO DE TRIGGERS
+
+-- INSERÇÃO DE DADOS NO BANCO
 
 -- Inserção de Clientes
 INSERT INTO Cliente (nome, email, cpf, tipo, salario, rua, bairro, cidade, estado, num, cep)
@@ -96,7 +278,6 @@ VALUES
     ('Beck', 'beckLuis@gmail.com', '25632145685', 'PF', 15000, 'Rua Dos Papagaios', 'Arara Azul', 'Campinas', 'São Paulo', 132, 13625495),
     ('Maciel', 'macielJulia@gmail.com', '12546253126', 'PF', 25000, 'Rua dos Coqueiros', 'Parque das Aguas', 'Hortolandia', 'São Paulo', 665, 13256245);
 
-
 -- Inserção de Contatos
 INSERT INTO Contato (numero, cliente_id)
 VALUES 
@@ -104,7 +285,6 @@ VALUES
     ('5263112522', 2),
     ('5263112522', 3),
     ('5263112522', 4);
-	
 
 -- Inserção de Movimentações
 INSERT INTO Movimentacao (conta_origem_id, valor, tipo_movimentacao)
@@ -123,20 +303,22 @@ VALUES
     (4, 1, 125, 'TED');
 
 -- Inserção de Avaliações de Crédito
-INSERT INTO AvaliacaoCredito (conta_id, limite, permissao, data_solicitacao)
+INSERT INTO AvaliacaoCredito (conta_id)
 VALUES 
-    (1, 700, true, CURRENT_DATE),
-    (2, 750, true, CURRENT_DATE),
-    (3, 800, false, CURRENT_DATE),
-    (4, 720, false, CURRENT_DATE);
+    (1),
+    (2),
+    (3),
+    (4);
 
 -- Inserção de Empréstimos
-INSERT INTO Emprestimo (conta_id, valor_solicitado, parcelas, data_solicitacao)
+INSERT INTO Emprestimo (conta_id, valor_solicitado, parcelas)
 VALUES 
-    (1, 750, 12, CURRENT_DATE),
-    (2, 500, 12, CURRENT_DATE),
-    (3, 700, 12, CURRENT_DATE),
-    (4, 250, 12, CURRENT_DATE);
+    (1, 750, 8),
+    (2, 500, 10),
+    (3, 700, 5),
+    (4, 250, 12);
+
+-- END INSERÇÃO DE DADOS NO BANCO
 
 
 
