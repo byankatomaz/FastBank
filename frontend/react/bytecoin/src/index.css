@@ -14,8 +14,27 @@ body {
 }
 
 
+/* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #111111 #1c1c1c;
+  }
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 16px;
+  }
+  *::-webkit-scrollbar-track {
+    background: #1c1c1c;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: #111111;
+    border-radius: 10px;
+  }
+
+
 .header {
-  @apply flex justify-between items-center w-full h-20 fixed bg-black top-0 shadow-md shadow-black
+  @apply flex justify-between items-center w-full h-20 fixed bg-black top-0 shadow-md shadow-black z-50
 }
 
 .container-signup {
