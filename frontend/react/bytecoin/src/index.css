@@ -27,7 +27,7 @@ body {
 }
 
 .container {
-  @apply w-full max-w-5xl m-auto py-8 flex justify-center mt-28 text-white
+  @apply w-full max-w-5xl m-auto py-8 flex items-center justify-center mt-28 text-white
 }
 
 .container .container-signup h1 {
@@ -86,5 +86,8 @@ body {
 .custom-image {
   background-image: url('./images/ampulhetaEscritorio.jpg');
   height: 80vh;
+}
 
+.containerCartao{
+  @apply flex flex-col md:flex-row mt-4 items-center md:items-start gap-10;
 }

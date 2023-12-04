@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import styles from './styles'
 import Fundo from '../../images/fundoHome.png'
-
-import {
-  useFonts,
-  JetBrainsMono_400Regular,
-  JetBrainsMono_100Thin_Italic
-} from '@expo-google-fonts/jetbrains-mono';
+import * as Animatable from 'react-native-animatable'
+import styles from './styles'
 
 import {
   Text,
@@ -15,37 +10,26 @@ import {
   TouchableOpacity
 } from 'react-native'
 
-export default function Home() {
-
-
-  let [fontsLoaded] = useFonts({
-    JetBrainsMono_400Regular,
-  });
-
-  if (!fontsLoaded) {
-    return undefined;
-  }
-  
-
+export default function Home({ navigation }) {
 
   return (
     <View style={styles.container}>
 
-      <View style={styles.containerLogo}>
+      <View>
         <Image
           source={Fundo}
-          style={{width: '100%'}}
+          style={styles.logo}
         />
       </View>
 
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.buttonCadastrar}>
+      <Animatable.View animation='fadeInUp' style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.buttonCadastrar} onPress={() => navigation.navigate('SignUp')}>
           <Text style={styles.buttonText}>Cadastrar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonLogin}>
+        <TouchableOpacity style={styles.buttonLogin} onPress={() => navigation.navigate('SignIn')}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
-      </View>
+      </Animatable.View>
     </View>
   )
 }

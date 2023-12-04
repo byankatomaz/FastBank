@@ -1,4 +1,4 @@
-import { Home, HomeCliente, SignIn, SignUp } from 'pages'
+import { Home, HomeCliente, SignIn, SignUp, AboutUs} from 'pages'
 import {
     RouterProvider,
     createBrowserRouter
@@ -24,6 +24,10 @@ const rota = createBrowserRouter ([
     {   
         path: '/homecliente',
         element: <HomeCliente />
+    },
+    {   
+        path: '/aboutUs',
+        element: <AboutUs />
     },
 ])
 

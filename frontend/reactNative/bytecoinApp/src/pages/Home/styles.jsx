@@ -1,20 +1,17 @@
 import { StyleSheet } from "react-native";
 
-export default styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
 
-  containerLogo: {
-    position: 'relative',
-    height: '100%',
-    backgroundColor: "#000",
-    justifyContent: "center",
-    width: '100%',
+  logo: {
+    height: '100%', 
+    width: '100%', 
+    backgroundColor: '#000'
   },
 
   buttonContainer: {
-    flex: 1,
     justifyContent: 'space-between',
     gap: 15,
     width: '100%',
@@ -27,8 +24,7 @@ export default styles = StyleSheet.create({
     backgroundColor: 'rgba(169, 29, 29, 0.64)',
     paddingVertical: 8,
     paddingHorizontal: 90,
-    borderRadius: 5,
-
+    borderRadius: 5
   },
 
   buttonLogin: {
@@ -36,13 +32,15 @@ export default styles = StyleSheet.create({
     color: '#fff',
     paddingVertical: 8,
     paddingHorizontal: 103,
-    borderRadius: 5,
-
+    borderRadius: 5
   },
 
   buttonText: {
     textAlign: 'center',
     color: '#fff',
-    fontFamily: 'JetBrainsMono_400Regular',
+    fontFamily: 'JetBrainsMono_400Regular'
   },
 })
+
+
+export default styles;

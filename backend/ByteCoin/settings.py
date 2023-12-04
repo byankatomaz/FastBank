@@ -69,8 +69,11 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8080",
     "http://localhost:3000",
-    "http://localhost:5173",
+    "http://localhost:5173", 
+    "exp://192.168.1.230:8081", 
+    "http://localhost:19006"
 ]
 
 ROOT_URLCONF = 'ByteCoin.urls'

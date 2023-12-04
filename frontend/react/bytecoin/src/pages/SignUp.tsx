@@ -64,16 +64,8 @@ export function SignUp() {
         alert('Erro ao pesquisar CEP')
       }
     }
-
-
-
   }
-
-
-
   const onSubmit: SubmitHandler<CreateCliente> = async (values) => {
-    
-
     try {
       const { status, data } = await ClienteService.createClient(values);
       if (status === 201) {

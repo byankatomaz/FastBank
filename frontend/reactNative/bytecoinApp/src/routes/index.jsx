@@ -9,6 +9,7 @@ import Movements from '../pages/Movements'
 import Logout from '../pages/Logout'
 import Loan from '../pages/Loan'
 import CreditRating from '../pages/CreditRating'
+import Initial from '../pages/Initial';
 
 const Stack = createNativeStackNavigator()
 
@@ -23,7 +24,7 @@ export default function Routes() {
 
     return (
         <Stack.Navigator>
-            {isLoading ? (
+            {/* {isLoading ? (
                 <Stack.Screen
                  name="Welcome" 
                  component={Welcome} 
@@ -45,6 +46,11 @@ export default function Routes() {
             <Stack.Screen
                 name='SignUp'
                 component={SignUp}
+                options={{ headerShown: false }}
+            /> */}
+            <Stack.Screen
+                name='Initial'
+                component={Initial}
                 options={{ headerShown: false }}
             />
             <Stack.Screen
