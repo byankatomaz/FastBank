@@ -8,10 +8,21 @@ export function AuthProvider({ children }) {
 
   const [ cliente, setCliente ] = useState(JSON);
 
-  const [ conta, setConta ] = useState(JSON)
+  const [ conta, setConta ] = useState(JSON);
+
+  function setandoCliente(values){
+    setCliente(values)
+  }
+
+  function setandoConta(values){
+    console.log('setando', values)
+    if(values){
+      setConta(values)
+    }
+  }
 
   return (
-    <AuthContext.Provider value={{ accessToken, setAccessToken, cliente, setCliente, conta, setConta }}>
+    <AuthContext.Provider value={{ setandoCliente, setandoConta, accessToken, setAccessToken, cliente, setCliente, conta, setConta }}>
       {children}
     </AuthContext.Provider>
   );

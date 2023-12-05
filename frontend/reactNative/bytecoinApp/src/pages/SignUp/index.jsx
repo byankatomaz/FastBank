@@ -52,6 +52,10 @@ export default function SignUp({ navigation }) {
       if (step < 3) {
         setStep(step + 1);
       } else {
+        values.tipo = valor
+        values.ativo = true
+
+        console.log(values)
         const response = await ClienteService.createClient(values);
 
         if (response.status === 201) {
@@ -114,7 +118,7 @@ export default function SignUp({ navigation }) {
             <TextInput onChangeText={text => setValue('cpf', text)} placeholderTextColor='#6C6B6B' placeholder='Digite seu CPF' style={styles.input} />
 
             <Text style={styles.title}>Salario</Text>
-            <TextInput secureTextEntry onChangeText={text => setValue('password', text)} placeholderTextColor='#6C6B6B' placeholder='Digite sua senha' style={styles.input} />
+            <TextInput onChangeText={text => setValue('salario', text)} placeholderTextColor='#6C6B6B' placeholder='Digite seu salario' style={styles.input} />
 
             <Text style={styles.title}>Tipo de Pessoa</Text>
             <DropDownPicker
@@ -146,16 +150,16 @@ export default function SignUp({ navigation }) {
             <TextInput onBlur={searchCep} value={cep} onChangeText={text => { setValue('cep', text); CEPChange(text) }} placeholderTextColor='#6C6B6B' placeholder='Digite seu CEP' style={styles.input} />
 
             <Text style={styles.title}>Rua</Text>
-            <TextInput value={rua} onChangeText={text => setValue('rua', text)} placeholderTextColor='#6C6B6B' placeholder='Rua' style={styles.input} />
+            <TextInput value={rua} onChangeText={setValue('rua', rua)} placeholderTextColor='#6C6B6B' placeholder='Rua' style={styles.input} />
 
             <Text style={styles.title}>Bairro</Text>
-            <TextInput value={bairro} onChangeText={text => setValue('bairro', text)} placeholderTextColor='#6C6B6B' placeholder='Bairro' style={styles.input} />
+            <TextInput value={bairro} onChangeText={setValue('bairro', bairro)} placeholderTextColor='#6C6B6B' placeholder='Bairro' style={styles.input} />
 
             <Text style={styles.title}>Cidade</Text>
-            <TextInput value={cidade} onChangeText={text => setValue('cidade', text)} placeholderTextColor='#6C6B6B' placeholder='Cidade' style={styles.input} />
+            <TextInput value={cidade} onChangeText={setValue('cidade', cidade)} placeholderTextColor='#6C6B6B' placeholder='Cidade' style={styles.input} />
 
             <Text style={styles.title}>Estado</Text>
-            <TextInput value={estado} onChangeText={text => setValue('estado', text)} placeholderTextColor='#6C6B6B' placeholder='Estado' style={styles.input} />
+            <TextInput value={estado} onChangeText={setValue('estado', estado)} placeholderTextColor='#6C6B6B' placeholder='Estado' style={styles.input} />
 
             <Text style={styles.title}>Numero</Text>
             <TextInput onChangeText={text => setValue('num', text)} placeholderTextColor='#6C6B6B' placeholder='Numero da Casa' style={styles.input} />

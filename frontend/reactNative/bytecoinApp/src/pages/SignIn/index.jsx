@@ -3,13 +3,12 @@ import React, { useEffect } from 'react'
 import styles from './styles'
 import Fundo from '../../images/fundoHome.png'
 import * as Animatable from 'react-native-animatable'
-import { useForm, SubmitHandler } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { ClienteService } from '../../services/clienteService'
-import { ClienteLoginResolver } from '../../validations/ClienteSchema'
 import { useAuth } from '../../context/AuthContext'
 
 export default function SignIn({ navigation }) {
-  const { setAccessToken } = useAuth();
+  const { setAccessToken, accessToken, cliente, setandoConta, setandoCliente } = useAuth();
 
   const { register, setValue, handleSubmit } = useForm();
 
@@ -19,19 +18,62 @@ export default function SignIn({ navigation }) {
   }, [register])
 
   const onSubmit = async (values) => {
-  
+
     try {
       const { status, data } = await ClienteService.loginClient(values);
-      
+
       if (status === 200 && data['access']) {
         setAccessToken(data['access']);
-   
+
         navigation.navigate('Initial');
       }
     } catch (error) {
       console.error('Erro ao logar o cliente:', error);
     }
   };
+
+  useEffect(() => {
+
+    async function clienteData() {
+      try {
+
+        if (accessToken) {
+          const response = await ClienteService.infoClient(accessToken);
+          setandoCliente(response.data)
+        }
+
+      } catch (error) {
+        console.error('Erro ao obter informações do cliente:', error);
+      }
+    };
+
+    if (accessToken) {
+      clienteData()
+    }
+
+  }, [accessToken]);
+
+  useEffect(() => {
+    async function contaData() {
+      try {
+        if (cliente['id'] == undefined) {
+          console.log('sem cliente')
+        } else {
+
+          console.log('ENTREI NA CONTA');
+          console.log(cliente['id']);
+
+          const response = await ClienteService.ContaClient(accessToken, cliente['id']);
+          setandoConta(response.data);
+        }
+
+      } catch (error) {
+        console.error('Erro ao obter informações da conta:', error);
+      }
+    }
+
+    contaData();
+  }, [accessToken, cliente]);
 
 
   return (
@@ -47,7 +89,7 @@ export default function SignIn({ navigation }) {
           <Text style={styles.loginTitle}>Login</Text>
 
           <Text style={styles.title}>Email</Text>
-          <TextInput keyboardType="email-address"  onChangeText={text => setValue('email', text)} placeholderTextColor='#6C6B6B' placeholder='Digite seu email' style={styles.input} />
+          <TextInput keyboardType="email-address" onChangeText={text => setValue('email', text)} placeholderTextColor='#6C6B6B' placeholder='Digite seu email' style={styles.input} />
 
           <Text style={styles.title}>Senha</Text>
           <TextInput secureTextEntry onChangeText={text => setValue('password', text)} placeholderTextColor='#6C6B6B' placeholder='Digite sua senha' style={styles.input} />

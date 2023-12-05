@@ -7,24 +7,25 @@ import { ClienteService } from '../../services/clienteService'
 import { useAuth } from '../../context/AuthContext'
 
 
-export default function Loan({ navigation }) {
+export default function PIX({ navigation }) {
 
   const { register, setValue, handleSubmit } = useForm();
   const { conta, accessToken } = useAuth();
 
   useEffect(() => {
-    register('valor_solicitado')
-    register('parcelas')
+    register('valor')
+    register('conta_destino')
 
   }, [register])
 
   const onSubmit = async (values) => {
     try {
-      console.log(conta)
+      console.log(values)
       const data = {
-        valor_solicitado: values.valor_solicitado.toString(),
-        parcelas: parseInt(values.parcelas),
-        conta: conta['id'], 
+        conta_destino: values.conta_destino,
+        valor: values.valor.toString(),
+        tipo_movimentacao: "PIX",
+        conta_origem: conta['id'], 
       };
 
       console.log(data)
@@ -32,7 +33,7 @@ export default function Loan({ navigation }) {
 
       if (data) {
         console.log(accessToken)
-        const response = await ClienteService.Emprestimo(accessToken, data);
+        const response = await ClienteService.Movimentacao(accessToken, data);
         console.log(response)
 
         if (response.status === 201) {
@@ -50,13 +51,14 @@ export default function Loan({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.form}>
-        <Text style={styles.loginTitle}>Emprestimo</Text>
+        <Text style={styles.loginTitle}>PIX</Text>
 
         <Text style={styles.title}>Valor</Text>
-        <TextInput onChangeText={text => setValue('valor_solicitado', text)} placeholderTextColor='#6C6B6B' placeholder='Valor solicitado' style={styles.input} />
+        <TextInput onChangeText={text => setValue('valor', text)} placeholderTextColor='#6C6B6B' placeholder='Valor solicitado' style={styles.input} />
 
-        <Text style={styles.title}>Parcelas</Text>
-        <TextInput onChangeText={text => setValue('parcelas', text)} placeholderTextColor='#6C6B6B' placeholder='Parcelas' style={styles.input} />
+        <Text style={styles.title}>Conta de Destino</Text>
+        <TextInput onChangeText={text => setValue('conta_destino', text)} placeholderTextColor='#6C6B6B' placeholder='Conta de Destino' style={styles.input} />
+
       </View>
       <View style={styles.buttons}>
         <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>

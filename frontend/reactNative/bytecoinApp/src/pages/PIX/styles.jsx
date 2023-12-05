@@ -1,23 +1,9 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  
   container: {
-    flex: 1
-  },
-
-  picker: {
-    alignSelf: 'center',
-    marginTop: 10,
-    width: '60%',
-    height: 30,
-    backgroundColor: '#fff',
-    color: '#000',
-  },
-
-  logo: {
-    height: '100%',
-    width: '100%',
+    flex: 1,
+    backgroundColor: '#000'
   },
 
   loginTitle: {
@@ -30,35 +16,30 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#000",
     position: 'absolute',
+    top: '40%',
     width: '100%',
-    borderTopStartRadius: 35,
-    borderTopEndRadius: 35,
-    bottom: 0,
+    borderRadius: 35,
+   
   },
 
   form: {
     width: '100%',
+    bottom: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 80,
+    paddingVertical: 100,
   },
 
-  title: {
+  title:{
     color: '#fff',
     width: '100%',
     marginLeft: 100,
     fontFamily: 'JetBrainsMono_400Regular',
     fontSize: 16,
-    marginTop: 30,
+    marginTop: 50,
   },
 
-  firstInput:{
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-
-  input: {
+  input:{
     width: '60%',
     borderBottomWidth: 1,
     borderBottomColor: '#fff',
@@ -69,16 +50,16 @@ const styles = StyleSheet.create({
 
   buttons: {
     alignItems: 'center',
-    bottom: 50,
-    marginTop: 10,
+    bottom: 120,
   },
 
   button: {
+    marginTop: 40,
     backgroundColor: 'rgba(169, 29, 29, 0.64)',
     paddingVertical: 8,
     paddingHorizontal: 90,
     borderRadius: 5,
-    marginBottom: 7
+    marginBottom:7
   },
 
   buttonTxt: {
@@ -94,6 +75,6 @@ const styles = StyleSheet.create({
     fontFamily: 'JetBrainsMono_400Regular',
   },
 
-});
+})
 
 export default styles;

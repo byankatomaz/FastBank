@@ -5,11 +5,14 @@ import Home from '../pages/Home'
 import Welcome from '../pages/Welcome'
 import SignIn from '../pages/SignIn'
 import SignUp from '../pages/SignUp'
-import Movements from '../pages/Movements'
 import Logout from '../pages/Logout'
 import Loan from '../pages/Loan'
 import CreditRating from '../pages/CreditRating'
 import Initial from '../pages/Initial';
+import PIX from '../pages/PIX';
+import TED from '../pages/TED';
+import DEP from '../pages/DEP';
+import Extract from '../pages/Extract';
 
 const Stack = createNativeStackNavigator()
 
@@ -54,8 +57,23 @@ export default function Routes() {
                 options={{ headerShown: false }}
             />
             <Stack.Screen
-                name='Movements'
-                component={Movements}
+                name='TED'
+                component={TED}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name='DEP'
+                component={DEP}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name='PIX'
+                component={PIX}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name='Extract'
+                component={Extract}
                 options={{ headerShown: false }}
             />
             <Stack.Screen
