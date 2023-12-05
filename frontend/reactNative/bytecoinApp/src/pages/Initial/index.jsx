@@ -3,10 +3,8 @@ import { useAuth } from '../../context/AuthContext'
 import { Text, View, TouchableOpacity } from 'react-native'
 import { ClienteService } from '../../services/clienteService'
 import styles from './styles'
-import { data } from 'autoprefixer'
 
-
-export default function Initial() {
+export default function Initial({ navigation }) {
     const { accessToken, cliente, setCliente, conta, setConta } = useAuth();
 
     useEffect(() => {
@@ -34,9 +32,9 @@ export default function Initial() {
         async function contaData() {
             try {
                 if (cliente) {
-                    const response = await ClienteService.ContaClient(accessToken, cliente.id);
+                    console.log(cliente['id'])
+                    const response = await ClienteService.ContaClient(accessToken, cliente['id']);
                     setConta(response.data)
-                    console.log(cliente)
                 }
             }
             catch (error) {
@@ -65,6 +63,16 @@ export default function Initial() {
                     </TouchableOpacity>
                 </View>
             </View>
+
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CreditRating')}>
+                <Text style={styles.txtHeader}>?P</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Loan')}>
+                <Text style={styles.txtHeader}>LOAN</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Movements')}>
+                <Text style={styles.txtHeader}>Moviments</Text>
+            </TouchableOpacity>
 
         </View>
     )

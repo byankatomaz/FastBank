@@ -24,7 +24,7 @@ export default function Routes() {
 
     return (
         <Stack.Navigator>
-            {/* {isLoading ? (
+            {isLoading ? (
                 <Stack.Screen
                  name="Welcome" 
                  component={Welcome} 
@@ -47,7 +47,7 @@ export default function Routes() {
                 name='SignUp'
                 component={SignUp}
                 options={{ headerShown: false }}
-            /> */}
+            /> 
             <Stack.Screen
                 name='Initial'
                 component={Initial}

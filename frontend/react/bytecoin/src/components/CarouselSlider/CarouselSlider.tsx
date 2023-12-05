@@ -7,7 +7,7 @@ import { FreeMode, Pagination } from 'swiper/modules';
 
 import image1 from '../../images/3D_Animation_Style_hourglass_with_red_sand_3.jpg';
 import image2 from '../../images/Absolute_Reality_v16_woman_holding_an_hourglass_with_red_sand_0.jpg';
-import image3 from '../../images/card.jpg';
+import image3 from '../../images/DreamShaper_v7_Person_holding_a_DIGIPAYLINE_bank_card_that_has_1.jpg';
 
 export function CarouselSlider() {
   return (
@@ -28,7 +28,7 @@ export function CarouselSlider() {
         <img src={image2} alt="" className='w-full h-full object-cover' />
       </SwiperSlide>
       <SwiperSlide className='flex items-center justify-center h-full'>
-        <img src={image3} alt="" className='w-full h-full object-cover' />
+        <img src={image3} alt="" className='w-full h-80 object-cover' />
       </SwiperSlide>
     </Swiper>
   );
