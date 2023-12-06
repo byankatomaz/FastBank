@@ -17,6 +17,28 @@ export default function SignIn({ navigation }) {
     register('password')
   }, [register])
 
+  useEffect(() => {
+
+    async function clienteData() {
+      try {
+
+        if (accessToken) {
+          const response = await ClienteService.infoClient(accessToken);
+          setandoCliente(response.data)
+          contaData(response.data)
+        }
+
+      } catch (error) {
+        console.error('Erro ao obter informações do cliente:', error);
+      }
+    };
+
+    if(accessToken){
+      clienteData()
+    }
+ 
+  }, [accessToken]);
+
   const onSubmit = async (values) => {
 
     try {
@@ -32,48 +54,23 @@ export default function SignIn({ navigation }) {
     }
   };
 
-  useEffect(() => {
 
-    async function clienteData() {
+ async function contaData(data) {
       try {
-
-        if (accessToken) {
-          const response = await ClienteService.infoClient(accessToken);
-          setandoCliente(response.data)
-        }
-
-      } catch (error) {
-        console.error('Erro ao obter informações do cliente:', error);
-      }
-    };
-
-    if (accessToken) {
-      clienteData()
-    }
-
-  }, [accessToken]);
-
-  useEffect(() => {
-    async function contaData() {
-      try {
-        if (cliente['id'] == undefined) {
+        if (data['id'] == undefined) {
           console.log('sem cliente')
         } else {
 
           console.log('ENTREI NA CONTA');
-          console.log(cliente['id']);
-
-          const response = await ClienteService.ContaClient(accessToken, cliente['id']);
+          console.log(data['id']);
+          const response = await ClienteService.ContaClient(accessToken, data['id']);
           setandoConta(response.data);
         }
 
       } catch (error) {
         console.error('Erro ao obter informações da conta:', error);
       }
-    }
-
-    contaData();
-  }, [accessToken, cliente]);
+  }
 
 
   return (

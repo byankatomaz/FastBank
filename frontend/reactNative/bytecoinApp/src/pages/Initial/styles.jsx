@@ -70,19 +70,21 @@ const styles = StyleSheet.create({
     },
 
     acoesContainer: {
+        display: 'flex',
         width: '80%',
         alignSelf: 'center',
         marginTop: 20,
-        flexDirection: 'col',
-        justifyContent: 'space-between'
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        gap: 10
 
     },
 
-    acoes: {
-        width: '80%',
+    acoes1: {
+        width: '100%',
         alignSelf: 'center',
         marginTop: 10,
-        flexDirection: 'row',
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         display: 'flex',
@@ -90,10 +92,22 @@ const styles = StyleSheet.create({
 
     },
 
+    acoes: {
+        width: '80%',
+        alignSelf: 'center',
+        marginTop: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        display: 'flex',
+        gap: 25
+    },
+
+
     buttonAcoes: {
         backgroundColor: '#323232',
-        height: 45,
-        width: '39%',
+        height: 50,
+        width: '60%',
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 5,
@@ -140,8 +154,9 @@ const styles = StyleSheet.create({
     pixPrin: {
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         marginTop: 10,
+
     }, 
 
     cartaoContainer: {
@@ -157,8 +172,7 @@ const styles = StyleSheet.create({
         height: 100,
         width: '50%',
         marginTop: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignSelf: 'center',
         borderRadius: 5,
         shadowColor: "#000000",
         shadowOffset: {
@@ -168,21 +182,27 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
-
         display: 'flex',
         flexDirection: 'row',
         gap: 15,
+        padding: 20,
 
     },
 
     txtCartao: {
         color: '#fff',
         fontFamily: 'JetBrainsMono_400Regular',
-        fontSize: 10,
+        fontSize: 8,
     },
 
     titulos: {
-        flexDirection: 'column'
+        flexDirection: 'column',
+        gap: 5
+    },
+
+    imagemCartao: {
+        display: 'flex',
+        justifyContent: 'flex-start'
     }
 
 

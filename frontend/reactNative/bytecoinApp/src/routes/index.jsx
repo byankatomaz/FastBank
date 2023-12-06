@@ -13,6 +13,7 @@ import PIX from '../pages/PIX';
 import TED from '../pages/TED';
 import DEP from '../pages/DEP';
 import Extract from '../pages/Extract';
+import Card from '../pages/Card';
 
 const Stack = createNativeStackNavigator()
 
@@ -29,15 +30,15 @@ export default function Routes() {
         <Stack.Navigator>
             {isLoading ? (
                 <Stack.Screen
-                 name="Welcome" 
-                 component={Welcome} 
-                 options={{ headerShown: false }}
+                    name="Welcome"
+                    component={Welcome}
+                    options={{ headerShown: false }}
                 />
             ) : (
-                <Stack.Screen 
-                name="Home" 
-                component={Home} 
-                options={{ headerShown: false }}
+                <Stack.Screen
+                    name="Home"
+                    component={Home}
+                    options={{ headerShown: false }}
                 />
             )}
 
@@ -50,7 +51,7 @@ export default function Routes() {
                 name='SignUp'
                 component={SignUp}
                 options={{ headerShown: false }}
-            /> 
+            />
             <Stack.Screen
                 name='Initial'
                 component={Initial}
@@ -59,32 +60,72 @@ export default function Routes() {
             <Stack.Screen
                 name='TED'
                 component={TED}
-                options={{ headerShown: false }}
+                options={{
+                    headerStyle: {
+                        backgroundColor: '#000',
+                    },
+                    headerTintColor: '#fff',
+                }}
             />
             <Stack.Screen
                 name='DEP'
                 component={DEP}
-                options={{ headerShown: false }}
+                options={{
+                    headerStyle: {
+                        backgroundColor: '#000',
+                    },
+                    headerTintColor: '#fff',
+                }}
             />
             <Stack.Screen
                 name='PIX'
                 component={PIX}
-                options={{ headerShown: false }}
+                options={{
+                    headerStyle: {
+                        backgroundColor: '#000',
+                    },
+                    headerTintColor: '#fff',
+                }}
             />
             <Stack.Screen
                 name='Extract'
                 component={Extract}
-                options={{ headerShown: false }}
+                options={{
+                    headerStyle: {
+                        backgroundColor: '#000',
+                    },
+                    headerTintColor: '#fff',
+                }}
             />
             <Stack.Screen
                 name='Loan'
                 component={Loan}
-                options={{ headerShown: false }}
+                options={{
+                    headerStyle: {
+                        backgroundColor: '#000',
+                    },
+                    headerTintColor: '#fff',
+                }}
+            />
+            <Stack.Screen
+                name='Cartao'
+                component={Card}
+                options={{
+                    headerStyle: {
+                        backgroundColor: '#000',
+                    },
+                    headerTintColor: '#fff',
+                }}
             />
             <Stack.Screen
                 name='CreditRating'
                 component={CreditRating}
-                options={{ headerShown: false }}
+                options={{
+                    headerStyle: {
+                        backgroundColor: '#000',
+                    },
+                    headerTintColor: '#fff',
+                }}
             />
             <Stack.Screen
                 name='Logout'
