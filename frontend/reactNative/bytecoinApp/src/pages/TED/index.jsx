@@ -10,7 +10,7 @@ import { useAuth } from '../../context/AuthContext'
 export default function TED({ navigation }) {
 
   const { register, setValue, handleSubmit } = useForm();
-  const { conta, accessToken } = useAuth();
+  const { conta, accessToken, updateConta } = useAuth();
 
   useEffect(() => {
     register('valor')
@@ -49,6 +49,8 @@ export default function TED({ navigation }) {
           ]);
         }
       }
+
+      updateConta()
 
     } catch (error) {
       console.error('Erro ao enviar o cliente:', error);

@@ -5,7 +5,7 @@ import styles from './styles'
 import { ClienteService } from '../../services/clienteService'
 
 export default function CreditRating({ navigation }) {
-  const { conta, accessToken } = useAuth();
+  const { conta, accessToken, updateConta } = useAuth();
 
   const onSubmit = async () => {
     try {
@@ -19,7 +19,7 @@ export default function CreditRating({ navigation }) {
 
         if (response.status === 201) {
           console.log('Enviado: ', response.data)
-          alert.alert('Você fez a Avaliação de Credito e apareça em cartão caso aprovado', '', [
+          Alert.alert('Você fez a Avaliação de Credito e apareça em cartão caso aprovado', '', [
             {
               text: 'OK',
               onPress: () => {
@@ -31,8 +31,18 @@ export default function CreditRating({ navigation }) {
         }
       }
 
+      updateConta()
+
     } catch (error) {
-      console.error('Erro ao enviar o cliente:', error);
+      Alert.alert('Você não tem os requisitos necessarios para uma Avaliação de Crédito', '', [
+        {
+          text: 'OK',
+          onPress: () => {
+            console.log('Botão "OK" pressionado');
+            navigation.navigate('Initial');
+          },
+        },
+      ]);
     }
   };
 

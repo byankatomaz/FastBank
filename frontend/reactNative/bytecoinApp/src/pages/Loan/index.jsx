@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import styles from './styles'
 
@@ -10,7 +10,7 @@ import { useAuth } from '../../context/AuthContext'
 export default function Loan({ navigation }) {
 
   const { register, setValue, handleSubmit } = useForm();
-  const { conta, accessToken } = useAuth();
+  const { conta, accessToken, updateConta } = useAuth();
 
   useEffect(() => {
     register('valor_solicitado')
@@ -46,10 +46,20 @@ export default function Loan({ navigation }) {
             },
           ]);
         }
+
+        updateConta()
       }
 
     } catch (error) {
-      console.error('Erro ao enviar o cliente:', error);
+      Alert.alert('Não foi possivel fazer um empréstimo', '', [
+        {
+          text: 'OK',
+          onPress: () => {
+            console.log('Botão "OK" pressionado');
+            navigation.navigate('Initial');
+          },
+        },
+      ]);
     }
   };
 

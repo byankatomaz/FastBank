@@ -1,4 +1,6 @@
-import { createContext, useContext, ReactNode, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
+
+import { ClienteService } from '../services/clienteService'
 
 
 const AuthContext = createContext(undefined);
@@ -11,6 +13,16 @@ export function AuthProvider({ children }) {
   const [ conta, setConta ] = useState(JSON);
 
   const [ imagem, setImagem ] = useState(JSON);
+
+  const updateCliente = async () => {
+    const response = await ClienteService.infoClient(accessToken);
+    setCliente(response.data);
+  };
+
+  const updateConta = async () => {
+    const response = await ClienteService.ContaClient(accessToken, cliente.id);
+    setConta(response.data);
+  };
 
   function setandoCliente(values){
     setCliente(values)
@@ -29,7 +41,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ setandoImagem, imagem, setandoCliente, setandoConta, accessToken, setAccessToken, cliente, setCliente, conta, setConta }}>
+    <AuthContext.Provider value={{ setandoImagem, imagem, setandoCliente, setandoConta, accessToken, setAccessToken, cliente, setCliente, conta, setConta, updateCliente, updateConta }}>
       {children}
     </AuthContext.Provider>
   );

@@ -45,7 +45,7 @@ export default function SignIn({ navigation }) {
         navigation.navigate('Initial');
       }
     } catch (error) {
-      console.error('Erro ao logar o cliente:', error);
+      Alert.alert('Email ou senha estão incorretos');
       setLoginAttempts(loginAttempts + 1);
 
       if (loginAttempts = 3) {

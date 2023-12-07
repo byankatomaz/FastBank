@@ -10,7 +10,7 @@ import { useAuth } from '../../context/AuthContext'
 export default function DEP({ navigation }) {
 
   const { register, setValue, handleSubmit } = useForm();
-  const { conta, accessToken } = useAuth();
+  const { conta, accessToken, updateConta } = useAuth();
 
   useEffect(() => {
     register('valor')
@@ -27,7 +27,6 @@ export default function DEP({ navigation }) {
         tipo_movimentacao: "DEP",
         conta_origem: conta['id'], 
       };
-
       console.log(data)
       
 
@@ -50,8 +49,18 @@ export default function DEP({ navigation }) {
         }
       }
 
+      updateConta()
+
     } catch (error) {
-      console.error('Erro ao enviar o cliente:', error);
+      Alert.alert('Não foi possivel fazer o deposito', '', [
+        {
+          text: 'OK',
+          onPress: () => {
+            console.log('Botão "OK" pressionado');
+            navigation.navigate('Initial');
+          },
+        },
+      ]);
     }
   };
 

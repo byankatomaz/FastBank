@@ -92,7 +92,7 @@ export default function SignUp({ navigation }) {
               text: 'OK',
               onPress: () => {
                 console.log('Botão "OK" pressionado');
-                navigation.navigate('Initial');
+                navigation.navigate('Home');
               },
             },
           ]);
