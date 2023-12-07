@@ -7,6 +7,7 @@ import { ClienteResolver } from "validations";
 import Swal from 'sweetalert2'
 import 'sweetalert2/src/sweetalert2.scss'
 
+// Função de Cadastro do Cliente
 export function SignUp() {
   const { register, handleSubmit, setValue } = useForm({
     resolver: ClienteResolver,

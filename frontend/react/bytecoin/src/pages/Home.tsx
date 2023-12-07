@@ -1,20 +1,11 @@
 import { Button, Header, Footer, CarouselSlider } from "components"
 
 import card2 from '../images/card2.jpg';
-import ampulheta2 from '../images/ampulheta2.jpg';
 import ampulhetaEscritorio from '../images/ampulhetaEscritorio.jpg';
 import { Link } from "react-router-dom";
 
-
+// Função da Home
 export function Home() {
-
-    const settings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-    };
 
     return (
         <div>
@@ -74,20 +65,20 @@ export function Home() {
                 <CarouselSlider />
                 
 
-                <div className="mt-10">
-                    <section id="about-us" className="py-10 bg-gray-100 rounded-md">
+                <div className="mt-10 mb-10">
+                    <section id="about-us" className="py-10 rounded-md bg-gray-100">
                         <div className="p-16 flex flex-col">
-                            <h2 className="text-3xl font-bold mb-6 text-center text-black">Sobre Nós</h2>
-                            <p className="text-gray-700 text-center mb-8">
+                            <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Sobre Nós</h2>
+                            <p className="text-gray-800 text-center mb-8 text-xl font-semibold">
                                 Bem-vindo ao ByteKoin Bank, onde buscamos proporcionar a melhor experiência bancária para nossos clientes.
                             </p>
                             <div className="flex justify-center">
                                 <div className="max-w-2xl">
-                                    <p className="text-gray-700 mb-4">
+                                    <p className="text-gray-900 mb-4">
                                         No ByteKoin Bank, estamos comprometidos em oferecer serviços financeiros inovadores e seguros.
                                         Nossa equipe dedicada trabalha incansavelmente para atender às necessidades de nossos clientes e fornecer soluções bancárias de alta qualidade.
                                     </p>
-                                    <p className="text-gray-700">
+                                    <p className="text-gray-900">
                                         Seja você um cliente individual ou uma empresa, estamos aqui para ajudar a construir um futuro financeiro sólido.
                                         Explore nossos produtos e serviços e descubra como o ByteKoin Bank pode fazer a diferença em sua vida financeira.
                                     </p>

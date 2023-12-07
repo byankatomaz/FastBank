@@ -4,6 +4,8 @@ import {
     createBrowserRouter
 } from 'react-router-dom'
 
+
+// Rotas criadas dentro do meu Site
 const rota = createBrowserRouter ([
     {   
         path: '/',

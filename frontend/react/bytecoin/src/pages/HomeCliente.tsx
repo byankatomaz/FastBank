@@ -3,6 +3,7 @@ import { ClienteService } from "services";
 import { useEffect, useState } from 'react';
 import { useAuth, useUser } from "context";
 
+// Função da Home de Cliente, após ele fazer Login
 export function HomeCliente() {
     const { dataUser, setDataUser } = useUser();
     const [ dataCliente, setDataCliente ] = useState([])

@@ -10,7 +10,7 @@ import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 
-
+// Função de Login do Cliente
 export function SignIn() {
     const { register, handleSubmit } = useForm({
         resolver: ClienteLoginResolver,

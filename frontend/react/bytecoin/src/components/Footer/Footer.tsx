@@ -17,6 +17,7 @@ const LINKS = [
  
 const currentYear = new Date().getFullYear();
  
+// Função do Footer da página
 export function Footer() {
   return (
     <footer className="relative w-full text-white mt-10">

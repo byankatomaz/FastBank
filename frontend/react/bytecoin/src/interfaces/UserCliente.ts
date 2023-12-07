@@ -1,3 +1,5 @@
+// Interface para utilizar como tipo para armazenar as informações de cliente e manda-lo para API
+
 export interface UserCliente {
     imagem: string;
     nome: string;

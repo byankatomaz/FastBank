@@ -1,4 +1,3 @@
-import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/free-mode';
@@ -6,9 +5,10 @@ import 'swiper/css/pagination';
 import { FreeMode, Pagination } from 'swiper/modules';
 
 import image1 from '../../images/3D_Animation_Style_hourglass_with_red_sand_3.jpg';
-import image2 from '../../images/Absolute_Reality_v16_woman_holding_an_hourglass_with_red_sand_0.jpg';
-import image3 from '../../images/DreamShaper_v7_Person_holding_a_DIGIPAYLINE_bank_card_that_has_1.jpg';
+import image2 from '../../images/cardCarta.jpg';
+import image3 from '../../images/Absolute_Reality_v16_woman_holding_an_hourglass_with_red_sand_0.jpg';
 
+// Função que faz aparecer o carousel
 export function CarouselSlider() {
   return (
     <Swiper
@@ -19,7 +19,7 @@ export function CarouselSlider() {
         clickable: true,
       }}
       modules={[FreeMode, Pagination]}
-      className='bg-white w-8/12'
+      className=' w-11/12 my-14'
     >
       <SwiperSlide className='flex items-center justify-center h-full'>
         <img src={image1} alt="" className='w-full h-full object-cover' />

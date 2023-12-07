@@ -10,6 +10,7 @@ type Props = {
   signUp: boolean;
 }
 
+// Função do Header da página
 export function Header({ children, login, signUp }: Props) {
   const { accessToken, setAccessToken } = useAuth();
   const { setDataUser } = useUser();
