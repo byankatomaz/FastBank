@@ -1,19 +1,21 @@
-import { View, Text, Image, TextInput, TouchableOpacity } from 'react-native'
-import { Picker } from '@react-native-picker/picker'
+import { View, Text, Image, TextInput, TouchableOpacity, Alert,
+  ToastAndroid } from 'react-native'
+
+import * as ImagePicker from 'expo-image-picker';
 import React, { useEffect, useState } from 'react'
 import styles from './styles'
 import Fundo from '../../images/fundoHome.png'
 import * as Animatable from 'react-native-animatable'
 import { useForm } from 'react-hook-form'
 import { ClienteService } from '../../services/clienteService'
-import { useAuth } from '../../context/AuthContext'
 import DropDownPicker from 'react-native-dropdown-picker';
+import { useAuth } from '../../context/AuthContext';
 
 export default function SignUp({ navigation }) {
-  const { setAccessToken } = useAuth();
+
+  const { setandoImagem } = useAuth()
 
   const { register, setValue, handleSubmit } = useForm();
-  const [imagem, setImagem] = useState(null);
   const [cep, setCep] = useState();
   const [rua, setRua] = useState();
   const [bairro, setBairro] = useState();
@@ -47,6 +49,30 @@ export default function SignUp({ navigation }) {
     register('password')
   }, [register])
 
+  const handlePickerImage = async () => {
+    const { granted } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!granted) {
+      Alert.alert(
+        'Permissão necessária',
+        'Permita que sua aplicação acesse as imagens'
+      );
+    } else {
+      const { assets, canceled } = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        base64: false,
+        aspect: [4, 4],
+        quality: 1,
+      });
+
+      if (canceled) {
+        ToastAndroid.show('Operação cancelada', ToastAndroid.SHORT);
+        setandoImagem(assets)
+      }
+    }
+  };
+
+
   const onSubmit = async (values) => {
     try {
       if (step < 3) {
@@ -61,7 +87,15 @@ export default function SignUp({ navigation }) {
         if (response.status === 201) {
           console.log('Enviado: ', response.data)
 
-          navigation.navigate('Home');
+          Alert.alert('Você foi cadastrado com sucesso!', '', [
+            {
+              text: 'OK',
+              onPress: () => {
+                console.log('Botão "OK" pressionado');
+                navigation.navigate('Initial');
+              },
+            },
+          ]);
         }
       }
 
@@ -111,6 +145,9 @@ export default function SignUp({ navigation }) {
       case 1:
         return (
           <View style={styles.firstInput}>
+            <TouchableOpacity onPress={handlePickerImage}>
+              <Text style={{color: '#fff'}}>UPLOAD IMAGE</Text>
+            </TouchableOpacity>
             <Text style={styles.title}>Nome completo</Text>
             <TextInput onChangeText={text => setValue('nome', text)} placeholderTextColor='#6C6B6B' placeholder='Digite seu nome' style={styles.input} />
 

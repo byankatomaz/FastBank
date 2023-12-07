@@ -5,7 +5,6 @@ import Home from '../pages/Home'
 import Welcome from '../pages/Welcome'
 import SignIn from '../pages/SignIn'
 import SignUp from '../pages/SignUp'
-import Logout from '../pages/Logout'
 import Loan from '../pages/Loan'
 import CreditRating from '../pages/CreditRating'
 import Initial from '../pages/Initial';
@@ -14,6 +13,7 @@ import TED from '../pages/TED';
 import DEP from '../pages/DEP';
 import Extract from '../pages/Extract';
 import Card from '../pages/Card';
+import Profile from '../pages/Profile';
 
 const Stack = createNativeStackNavigator()
 
@@ -128,9 +128,14 @@ export default function Routes() {
                 }}
             />
             <Stack.Screen
-                name='Logout'
-                component={Logout}
-                options={{ headerShown: false }}
+                name='Profile'
+                component={Profile}
+                options={{
+                    headerStyle: {
+                        backgroundColor: '#000',
+                    },
+                    headerTintColor: '#fff',
+                }}
             />
         </Stack.Navigator>
     )

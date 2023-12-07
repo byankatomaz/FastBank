@@ -1,6 +1,5 @@
-import React, { Component } from 'react'
-import { Text, View, TouchableOpacity } from 'react-native'
-import { useForm } from 'react-hook-form'
+import React from 'react'
+import { Text, View, TouchableOpacity, Alert } from 'react-native'
 import { useAuth } from '../../context';
 import styles from './styles'
 import { ClienteService } from '../../services/clienteService'
@@ -11,7 +10,7 @@ export default function CreditRating({ navigation }) {
   const onSubmit = async () => {
     try {
       console.log('entrei')
-      const values = {'conta': conta.id};
+      const values = { 'conta': conta.id };
 
       if (values) {
         console.log(accessToken)
@@ -20,8 +19,15 @@ export default function CreditRating({ navigation }) {
 
         if (response.status === 201) {
           console.log('Enviado: ', response.data)
-
-          navigation.navigate('Initial');
+          alert.alert('Você fez a Avaliação de Credito e apareça em cartão caso aprovado', '', [
+            {
+              text: 'OK',
+              onPress: () => {
+                console.log('Botão "OK" pressionado');
+                navigation.navigate('Initial');
+              },
+            },
+          ]);
         }
       }
 
@@ -34,9 +40,16 @@ export default function CreditRating({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text> TELA AVALIAÇÃO DE CREDITO </Text>
-      <TouchableOpacity onPress={onSubmit}>
-        <Text style={{color: '#fff'}}> VERIFICAR SE O CLIENTE É PREMIUM</Text>
+      <View style={styles.containerEx}>
+        <Text style={styles.explicacaoText}>
+          A avaliação de crédito{'\n'}É um processo no qual instituições financeiras analisam o histórico de crédito e a capacidade financeira de um cliente para determinar a elegibilidade para serviços financeiros ou empréstimos.
+          Esteja ciente de que a solicitação de avaliação de crédito pode afetar sua pontuação de crédito.
+        </Text>
+      </View>
+
+
+      <TouchableOpacity style={styles.button} onPress={onSubmit}>
+        <Text style={styles.buttonTxt}>Solicitar Avaliação de Crédito</Text>
       </TouchableOpacity>
     </View>
   )

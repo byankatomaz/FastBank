@@ -10,8 +10,15 @@ export function AuthProvider({ children }) {
 
   const [ conta, setConta ] = useState(JSON);
 
+  const [ imagem, setImagem ] = useState(JSON);
+
   function setandoCliente(values){
     setCliente(values)
+  }
+
+  function setandoImagem(values){
+    console.log(values)
+    setImagem(values)
   }
 
   function setandoConta(values){
@@ -22,7 +29,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ setandoCliente, setandoConta, accessToken, setAccessToken, cliente, setCliente, conta, setConta }}>
+    <AuthContext.Provider value={{ setandoImagem, imagem, setandoCliente, setandoConta, accessToken, setAccessToken, cliente, setCliente, conta, setConta }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,5 +1,5 @@
-import { View, Text, TextInput, TouchableOpacity } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native'
+import React, { useEffect } from 'react'
 import styles from './styles'
 
 import { useForm } from 'react-hook-form'
@@ -38,8 +38,15 @@ export default function PIX({ navigation }) {
 
         if (response.status === 201) {
           console.log('Enviado: ', response.data)
-
-          navigation.navigate('Initial');
+          Alert.alert('Seu PIX foi enviado com sucesso!', '', [
+            {
+              text: 'OK',
+              onPress: () => {
+                console.log('Botão "OK" pressionado');
+                navigation.navigate('Initial');
+              },
+            },
+          ]);
         }
       }
 
@@ -54,7 +61,7 @@ export default function PIX({ navigation }) {
         <Text style={styles.loginTitle}>PIX</Text>
 
         <Text style={styles.title}>Valor</Text>
-        <TextInput onChangeText={text => setValue('valor', text)} placeholderTextColor='#6C6B6B' placeholder='Valor solicitado' style={styles.input} />
+        <TextInput onChangeText={text => setValue('valor', text)} placeholderTextColor='#6C6B6B' placeholder='Valor' style={styles.input} />
 
         <Text style={styles.title}>Conta de Destino</Text>
         <TextInput onChangeText={text => setValue('conta_destino', text)} placeholderTextColor='#6C6B6B' placeholder='Conta de Destino' style={styles.input} />
@@ -62,7 +69,7 @@ export default function PIX({ navigation }) {
       </View>
       <View style={styles.buttons}>
         <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
-          <Text style={styles.buttonTxt}>Entrar</Text>
+          <Text style={styles.buttonTxt}>Enviar</Text>
         </TouchableOpacity>
       </View>
     </View>

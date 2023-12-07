@@ -36,9 +36,15 @@ export default function Loan({ navigation }) {
         console.log(response)
 
         if (response.status === 201) {
-          console.log('Enviado: ', response.data)
-
-          navigation.navigate('Initial');
+          console.log('Enviado: ', response.data, '', [
+            {
+              text: 'OK',
+              onPress: () => {
+                console.log('Botão "OK" pressionado');
+                navigation.navigate('Initial');
+              },
+            },
+          ]);
         }
       }
 
@@ -60,7 +66,7 @@ export default function Loan({ navigation }) {
       </View>
       <View style={styles.buttons}>
         <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
-          <Text style={styles.buttonTxt}>Entrar</Text>
+          <Text style={styles.buttonTxt}>Solicitar</Text>
         </TouchableOpacity>
       </View>
     </View>

@@ -6,21 +6,10 @@ import styles from './styles'
 import background from '../../images/backgroundConvi.png'
 import cartao from '../../images/cartao.png'
 import { Feather } from '@expo/vector-icons'
-import CardSlogan from '../../components';
+import CardSlogan from '../../components/Card';
 
 export default function Initial({ navigation }) {
     const { cliente, conta } = useAuth();
-
-    // useEffect(() => console.log('initial', conta))
-    // const modalRef = useRef(null || Modalize);
-    // function openModal(){ modalRef?.current?.open()};
-
-    // const [isModalVisible, setModalVisible] = useState(false);
-
-    // const toggleModal = () => {
-    // setModalVisible(!isModalVisible);
-    // };
-    
 
     return (
         <View style={styles.container}>
@@ -28,13 +17,7 @@ export default function Initial({ navigation }) {
                 <Text style={styles.txtHeader}> Bem vindo, {'\n'} {cliente?.nome} </Text>
 
                 <View style={styles.buttonsHeader}>
-                    <TouchableOpacity style={styles.buttonHeader}>
-                        <Text style={styles.txtHeader}>?D</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonHeader}>
-                        <Text style={styles.txtHeader}>?A</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonHeader}>
+                    <TouchableOpacity style={styles.buttonHeader} onPress={() => navigation.navigate('Profile')}>
                         <Text style={styles.txtHeader}>
                             <Feather name='user' size={20} />
                         </Text>
@@ -116,11 +99,6 @@ export default function Initial({ navigation }) {
                     </View>
                 </TouchableOpacity>
             </View>
-
-            {/* {conta && (
-                 <CardSlogan isVisible={isModalVisible} closeModal={toggleModal}/>
-            )} */}
-           
 
 
         </View>

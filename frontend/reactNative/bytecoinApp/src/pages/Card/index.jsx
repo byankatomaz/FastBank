@@ -1,24 +1,25 @@
-import { View,Text, Image } from "react-native-animatable";
-import chip from "../../images/chip.png"
-import nfc from "../../images/nfc.png"
-import * as Animatable from 'react-native-animatable';
-import flagCard from "../../images/flagCard.png"
-import { useAuth } from "../../context";
+import { View, Text } from "react-native-animatable";
 import styles from './styles'
-import CardSlogan from "../../components";
+import CardSlogan from "../../components/Card";
+import { useAuth } from "../../context";
 
-export default function Card(){
-    
-    const { conta, cliente } = useAuth()
+export default function Card() {
 
-    return(
+    const { conta } = useAuth();
+
+    const cartao = conta?.cartao
+
+
+    return (
         <View style={styles.container}>
-
+            
             <View style={styles.cartao}>
-              <CardSlogan />
+                <Text style={styles.txtDados}>Dados do seu cartão:</Text>
+                <CardSlogan />
+                <Text style={styles.txtDados}>Limite disponivel: {cartao.limite}</Text>
+                <Text style={styles.txtDados}>Tipo de Cartão: {cartao.tipo}</Text>
             </View>
-         
+
         </View>
     )
 }
- 

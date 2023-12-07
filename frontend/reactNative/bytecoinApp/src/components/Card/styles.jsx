@@ -14,8 +14,6 @@ const styles = StyleSheet.create({
         width: '50%',
         fontSize: 20,
         marginBottom: 12,
-        
-
     },
 
     nameSlogan: {
@@ -53,24 +51,38 @@ const styles = StyleSheet.create({
         top: 25
     },
 
-    nameCard: {
-
-        fontSize: 18,
-        top: 35,
-        color: 'white',
-        fontFamily: 'JetBrainsMono_400Regular',
-
-    },
-    number: {
-        color: 'white',
-        fontSize: 18,
-        top: 35,
-        fontFamily: 'JetBrainsMono_400Regular',
-    },
     nfcC: {
         left: 175,
         top: 10
     },
+
+    containerBottom:{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 90
+    },
+
+    imagemBand:{
+        marginTop: 80
+    },
+
+    txtCard: {
+        color: '#fff',
+        fontFamily: 'JetBrainsMono_400Regular',
+    },
+    
+    cartaoStyle: {
+        display: 'flex',
+        marginTop: 40,
+        gap: 5
+    },
+
+    txtUltimo:{
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 50
+    }
 })
 
 export default styles
