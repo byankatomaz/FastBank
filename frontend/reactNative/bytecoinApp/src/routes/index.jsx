@@ -23,7 +23,7 @@ export default function Routes() {
     useEffect(() => {
         setTimeout(() => {
             setIsLoading(false);
-        }, 3000); // Tempo em milissegundos (3 segundos no exemplo)
+        }, 3000); 
     }, []);
 
     return (

@@ -1,12 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React from 'react'
 import { useAuth } from '../../context/AuthContext'
-import { Text, View, TouchableOpacity, Image } from 'react-native'
-import { Modalize } from 'react-native-modalize';
+import { Text, View, TouchableOpacity, Image } from 'react-native';
 import styles from './styles'
 import background from '../../images/backgroundConvi.png'
 import cartao from '../../images/cartao.png'
 import { Feather } from '@expo/vector-icons'
-import CardSlogan from '../../components/Card';
 
 export default function Initial({ navigation }) {
     const { cliente, conta } = useAuth();

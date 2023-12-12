@@ -3,6 +3,7 @@ import { Api } from "../providers/Api";
 
 const createClient = (data) => Api.post('api/v2/users/', data, {
   headers: {
+    Accept: 'appication/json',
     "Content-Type": "multipart/form-data",
   },
 });

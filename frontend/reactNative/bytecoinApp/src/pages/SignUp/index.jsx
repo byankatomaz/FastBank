@@ -1,7 +1,8 @@
-import { View, Text, Image, TextInput, TouchableOpacity, Alert,
-  ToastAndroid } from 'react-native'
+import {
+  View, Text, Image, TextInput, TouchableOpacity, Alert,
+  ToastAndroid
+} from 'react-native'
 
-import * as ImagePicker from 'expo-image-picker';
 import React, { useEffect, useState } from 'react'
 import styles from './styles'
 import Fundo from '../../images/fundoHome.png'
@@ -13,8 +14,6 @@ import { useAuth } from '../../context/AuthContext';
 
 export default function SignUp({ navigation }) {
 
-  const { setandoImagem } = useAuth()
-
   const { register, setValue, handleSubmit } = useForm();
   const [cep, setCep] = useState();
   const [rua, setRua] = useState();
@@ -24,7 +23,6 @@ export default function SignUp({ navigation }) {
 
   const [endereco, setEndereco] = useState({});
   const [step, setStep] = useState(1);
-
 
   const [open, setOpen] = useState(false);
   const [valor, setValor] = useState(null);
@@ -49,28 +47,40 @@ export default function SignUp({ navigation }) {
     register('password')
   }, [register])
 
-  const handlePickerImage = async () => {
-    const { granted } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!granted) {
-      Alert.alert(
-        'Permissão necessária',
-        'Permita que sua aplicação acesse as imagens'
-      );
-    } else {
-      const { assets, canceled } = await ImagePicker.launchImageLibraryAsync({
-        allowsEditing: true,
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        base64: false,
-        aspect: [4, 4],
-        quality: 1,
-      });
+  // const handlePickerImage = async () => {
+  //   const { granted } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  //   if (!granted) {
+  //     Alert.alert(
+  //       'Permissão necessária',
+  //       'Permita que sua aplicação acesse as imagens'
+  //     );
+  //   } else {
+  //     const { assets, canceled } = await ImagePicker.launchImageLibraryAsync({
+  //       allowsEditing: true,
+  //       mediaTypes: ImagePicker.MediaTypeOptions.Images,
+  //       base64: false,
+  //       aspect: [4, 4],
+  //       quality: 1,
+  //     });
 
-      if (canceled) {
-        ToastAndroid.show('Operação cancelada', ToastAndroid.SHORT);
-        setandoImagem(assets)
-      }
-    }
-  };
+  //     if (canceled) {
+  //       ToastAndroid.show('Operação cancelada', ToastAndroid.SHORT);
+  //     } else {
+  //       const fileName = assets[0].uri.substring(assets[0].uri.lastIndexOf('/') + 1, assets[0].uri.length)
+  //       const typeImage = fileName.split('.')[1]
+
+  //       const formData = new FormData()
+
+  //       formData.append('imagem', JSON.parse(JSON.stringify({
+  //         name: fileName,
+  //         uri: assets[0].uri,
+  //         type: 'image/' + typeImage
+  //       })))
+
+  //       setTesteImage(formData)
+  //     }
+  //   }
+  // };
 
 
   const onSubmit = async (values) => {
@@ -81,7 +91,6 @@ export default function SignUp({ navigation }) {
         values.tipo = valor
         values.ativo = true
 
-        console.log(values)
         const response = await ClienteService.createClient(values);
 
         if (response.status === 201) {
@@ -145,9 +154,7 @@ export default function SignUp({ navigation }) {
       case 1:
         return (
           <View style={styles.firstInput}>
-            <TouchableOpacity onPress={handlePickerImage}>
-              <Text style={{color: '#fff'}}>UPLOAD IMAGE</Text>
-            </TouchableOpacity>
+     
             <Text style={styles.title}>Nome completo</Text>
             <TextInput onChangeText={text => setValue('nome', text)} placeholderTextColor='#6C6B6B' placeholder='Digite seu nome' style={styles.input} />
 
